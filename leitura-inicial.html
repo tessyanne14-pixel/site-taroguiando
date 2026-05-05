@@ -347,11 +347,9 @@ button[type="submit"]:active { transform: translateY(-1px) scale(1.01); }
 
 <!-- FORMULÁRIO -->
 <div class="container">
-<form action="https://formsubmit.co/taroguiando.contato@gmail.com" method="POST">
-  <input type="hidden" name="_subject" value="✨ Nova Solicitação — Sessão de Clareza Gratuita">
-  <input type="hidden" name="_template" value="table">
-  <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_autoresponse" value="Olá! Recebi o seu formulário e entrarei em contato em breve. Com carinho, Tessy 💜">
+<form action="https://formspree.io/f/xnjwdgqk" method="POST">
+  <input type="hidden" name="_subject" value="✨ Nova Leitura Inicial — Sessão de Clareza Gratuita">
+  <input type="hidden" name="Origem do formulário" value="Sessão de clareza gratuita / Leitura Inicial">
   
   
   
@@ -631,7 +629,7 @@ document.querySelector('form').addEventListener('submit', function(e) {
   }
 
   msg += '=====================================\n';
-  msg += 'Enviado via site Taroguiando no Vercel';
+  msg += 'Enviado via leiturainicial.netlify.app';
 
   // Add or update hidden summary field
   var msgField = f.querySelector('[name="Respostas Completas"]');
