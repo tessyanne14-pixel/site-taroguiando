@@ -349,10 +349,9 @@ button[type="submit"]:active { transform: translateY(-1px) scale(1.01); }
 <div class="container">
 <form action="https://formspree.io/f/xnjwdgqk" method="POST">
   <input type="hidden" name="_subject" value="✨ Nova Sessão de Clareza - Taroguiando">
-  <input type="hidden" name="📌 Origem do formulário" value="Leitura Inicial / Sessão de Clareza Gratuita">
-  <input type="hidden" name="🧾 Observação" value="As respostas completas estão organizadas no campo RESUMO ORGANIZADO abaixo.">
+  <input type="hidden" name="📌 Origem" value="Sessão de Clareza Gratuita / Leitura Inicial">
 
-<!-- 👤 DADOS PESSOAIS -->
+<!-- DADOS PESSOAIS -->
   <div class="section">
     <div class="section-label">Identificação</div>
     <div class="section-title">Dados Pessoais</div>
@@ -380,7 +379,7 @@ button[type="submit"]:active { transform: translateY(-1px) scale(1.01); }
     </div>
   </div>
 
-  <!-- 🧭 O QUE ESTÁ ACONTECENDO -->
+  <!-- O QUE ESTÁ ACONTECENDO -->
   <div class="section">
     <div class="section-label">Parte 1</div>
     <div class="section-title">O que te trouxe até aqui</div>
@@ -520,7 +519,6 @@ document.querySelector('form').addEventListener('submit', function(e) {
   e.preventDefault();
   var f = this;
 
-  // Helper: get text/select value by name
   function getVal(name) {
     var r = '-';
     f.querySelectorAll('input, textarea, select').forEach(function(el) {
@@ -529,118 +527,93 @@ document.querySelector('form').addEventListener('submit', function(e) {
     return r;
   }
 
-  // Helper: get checked radio by name
   function getRadio(name) {
-    var r = '-';
-    f.querySelectorAll('input[type=radio]').forEach(function(el) {
-      if (el.name === name && el.checked) r = el.value;
-    });
-    return r;
+    var checked = f.querySelector('input[type="radio"][name="' + CSS.escape(name) + '"]:checked');
+    return checked ? checked.value : '-';
   }
 
-  // Helper: get all checked checkboxes by name
   function getChecks(name) {
-    var r = [];
-    f.querySelectorAll('input[type=checkbox]').forEach(function(el) {
-      if (el.name === name && el.checked) r.push(el.value);
+    var vals = [];
+    f.querySelectorAll('input[type="checkbox"][name="' + CSS.escape(name) + '"]:checked').forEach(function(el) {
+      vals.push(el.value);
     });
-    return r.length ? r.join(', ') : '-';
+    return vals.length ? vals.join(', ') : '-';
   }
 
-  // Format date
-  var dt = getVal('Data de Nascimento');
-  if (dt && dt !== '-') {
-    var p = dt.split('-');
-    if (p.length === 3) dt = p[2]+'/'+p[1]+'/'+p[0];
+  function addSection(parts, titulo, conteudo) {
+    if (!conteudo || conteudo === '-') return;
+    parts.push('');
+    parts.push(titulo);
+    parts.push(''); 
+    parts.push(conteudo);
   }
 
-  // Format WhatsApp
-  var wa = getVal('WhatsApp');
-  if (wa && wa !== '-') {
-    var n = wa.replace(/\D/g,'');
-    if (n.length === 11) wa = '('+n.slice(0,2)+') '+n.slice(2,7)+'-'+n.slice(7);
-    else if (n.length === 10) wa = '('+n.slice(0,2)+') '+n.slice(2,6)+'-'+n.slice(6);
-    // Update field
-    f.querySelectorAll('input').forEach(function(el){ if(el.name==='WhatsApp') el.value=wa; });
-  }
+  var dados =
+    'Nome: ' + getVal('Nome Completo') + '
+' +
+    'Nascimento: ' + getVal('Data de Nascimento') + '
+' +
+    'WhatsApp: ' + getVal('WhatsApp') + '
+' +
+    'E-mail: ' + getVal('Email') + '
+' +
+    'Cidade: ' + getVal('Cidade');
 
-  var msg = '';
-  msg += '=====================================\n';
-  msg += '  NOVA CLIENTE — SESSÃO DE CLAREZA\n';
-  msg += '=====================================\n\n';
+  var areas =
+    'Saúde física: ' + getRadio('Saúde Física') + '
+' +
+    'Saúde emocional: ' + getRadio('Saúde Emocional') + '
+' +
+    'Relacionamentos: ' + getRadio('Relacionamentos') + '
+' +
+    'Amizades: ' + getRadio('Amizades') + '
+' +
+    'Saúde espiritual: ' + getRadio('Saúde Espiritual') + '
+' +
+    'Trabalho e carreira: ' + getRadio('Trabalho e Carreira') + '
+' +
+    'Prosperidade financeira: ' + getRadio('Prosperidade Financeira') + '
+' +
+    'Sentido de propósito: ' + getRadio('Sentido de Propósito') + '
+' +
+    'Assertividade: ' + getRadio('Assertividade') + '
+' +
+    'Gestão do tempo: ' + getRadio('Gestão do Tempo');
 
-  msg += '👤 DADOS PESSOAIS\n';
-  msg += '───────────────\n';
-  msg += 'Nome: ' + getVal('Nome Completo') + '\n';
-  msg += 'Nascimento: ' + dt + '\n';
-  msg += 'WhatsApp: ' + wa + '\n';
-  msg += 'Email: ' + getVal('Email') + '\n';
-  msg += 'Cidade: ' + getVal('Cidade') + '\n\n';
+  var parts = [];
+  parts.push('✨ NOVA SESSÃO DE CLAREZA — TAROGUIANDO');
+  parts.push('');
+  parts.push('Um novo formulário de leitura inicial foi preenchido.');
+  parts.push('Use as respostas abaixo para identificar padrões, dores principais e oportunidade de convite para a sessão de clareza.');
+  addSection(parts, '👤 DADOS PESSOAIS', dados);
+  addSection(parts, '🧭 O QUE ESTÁ ACONTECENDO', getVal('O que está acontecendo'));
+  addSection(parts, '🌙 O QUE MAIS TIRA O SONO', getVal('O que mais tira o sono'));
+  addSection(parts, '📍 NÍVEL DE IMPACTO NA VIDA', getRadio('Nível de impacto na vida'));
+  addSection(parts, '🔁 PADRÕES QUE PERCEBE', getVal('Padrões que percebe'));
+  addSection(parts, '💜 A PESSOA SE IDENTIFICA COM', getChecks('Me identifico com'));
+  addSection(parts, '🧠 PENSAMENTOS RECORRENTES', getVal('Pensamentos recorrentes'));
+  addSection(parts, '📊 AVALIAÇÃO DAS ÁREAS DE VIDA', areas);
+  addSection(parts, '⚕️ CIÊNCIA SOBRE ACOMPANHAMENTO MÉDICO', getRadio('Ciente que não substitui acompanhamento médico'));
+  addSection(parts, '📝 ALGO MAIS A COMPARTILHAR', getVal('Algo mais a compartilhar'));
+  parts.push('');
+  parts.push('────────────────────────');
+  parts.push('Enviado via taroguiando.com.br/leitura-inicial.html');
 
-  msg += '🧭 O QUE ESTÁ ACONTECENDO\n';
-  msg += '───────────────────────\n';
-  msg += getVal('O que está acontecendo') + '\n\n';
+  var premium = document.createElement('textarea');
+  premium.name = '✨ RELATÓRIO PREMIUM — LEITURA INICIAL';
+  premium.style.display = 'none';
+  premium.value = parts.join('
+');
 
-  msg += '🌙 O QUE MAIS TIRA O SONO\n';
-  msg += '───────────────────────\n';
-  msg += getVal('O que mais tira o sono') + '\n\n';
+  // Remove summaries antigos, caso existam
+  f.querySelectorAll('[name="Respostas Completas"], [name="🧾 RESUMO ORGANIZADO"], [name="✨ RELATÓRIO PREMIUM — LEITURA INICIAL"]').forEach(function(el) {
+    el.remove();
+  });
+  f.appendChild(premium);
 
-  msg += '📍 NÍVEL DE IMPACTO NA VIDA\n';
-  msg += '─────────────────────────\n';
-  msg += getRadio('Nível de impacto na vida') + '\n\n';
-
-  msg += '🔁 PADRÕES QUE PERCEBE\n';
-  msg += '────────────────────\n';
-  msg += getVal('Padrões que percebe') + '\n\n';
-
-  msg += '💜 SE IDENTIFICA COM\n';
-  msg += '──────────────────\n';
-  msg += getChecks('Me identifico com') + '\n\n';
-
-  msg += '🧠 PENSAMENTOS RECORRENTES\n';
-  msg += '────────────────────────\n';
-  msg += getVal('Pensamentos recorrentes') + '\n\n';
-
-  msg += '📊 AVALIAÇÃO DAS ÁREAS DE VIDA (1 A 10)\n';
-  msg += '──────────────────────────────────────\n';
-  msg += 'Saúde Física:         ' + getRadio('Saúde Física') + '\n';
-  msg += 'Saúde Emocional:      ' + getRadio('Saúde Emocional') + '\n';
-  msg += 'Relacionamentos:       ' + getRadio('Relacionamentos') + '\n';
-  msg += 'Amizades:              ' + getRadio('Amizades') + '\n';
-  msg += 'Saúde Espiritual:     ' + getRadio('Saúde Espiritual') + '\n';
-  msg += 'Trabalho e Carreira:  ' + getRadio('Trabalho e Carreira') + '\n';
-  msg += 'Prosperidade Financ.: ' + getRadio('Prosperidade Financeira') + '\n';
-  msg += 'Sentido de Propósito: ' + getRadio('Sentido de Propósito') + '\n';
-  msg += 'Assertividade:         ' + getRadio('Assertividade') + '\n';
-  msg += 'Gestão do Tempo:      ' + getRadio('Gestão do Tempo') + '\n\n';
-
-  msg += '⚕️ CIÊNCIA SOBRE ACOMPANHAMENTO MÉDICO\n';
-  msg += '─────────────────────────────────────────────────\n';
-  msg += getRadio('Ciente que não substitui acompanhamento médico') + '\n\n';
-
-  var algo = getVal('Algo mais a compartilhar');
-  if (algo !== '-') {
-    msg += '📝 ALGO MAIS A COMPARTILHAR\n';
-    msg += '─────────────────────────\n';
-    msg += algo + '\n\n';
-  }
-
-  msg += '=====================================\n';
-  msg += 'Enviado via taroguiando.com.br/leitura-inicial.html';
-
-  // Add or update hidden summary field
-  var msgField = f.querySelector('[name="🧾 RESUMO ORGANIZADO"]');
-  if (!msgField) {
-    msgField = document.createElement('textarea');
-    msgField.name = '🧾 RESUMO ORGANIZADO';
-    msgField.style.display = 'none';
-    f.appendChild(msgField);
-  }
-  msgField.value = msg;
-
-  // Disable all visible fields to avoid clutter in email
+  // Mantém só dados essenciais + relatório premium para o e-mail ficar limpo.
   f.querySelectorAll('input:not([type=hidden]), textarea, select').forEach(function(el) {
-    var keep = ['Nome Completo','WhatsApp','Email','🧾 RESUMO ORGANIZADO'];
+    var keep = ['Nome Completo', 'WhatsApp', 'Email', '✨ RELATÓRIO PREMIUM — LEITURA INICIAL'];
     if (keep.indexOf(el.name) === -1) el.disabled = true;
   });
 
