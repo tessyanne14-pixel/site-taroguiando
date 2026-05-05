@@ -687,194 +687,207 @@ button[type="submit"]:active {
 
 
 
+
+
 <script>
-document.querySelector('form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  var f = this;
-  var btn = f.querySelector('button[type="submit"]');
+(function () {
+  var form = document.querySelector('form');
+  if (!form) return;
 
-  function getVal(name) {
-    var els = f.querySelectorAll('[name]');
-    for (var i = 0; i < els.length; i++) {
-      if (els[i].getAttribute('name') === name && els[i].type !== 'radio' && els[i].type !== 'checkbox') {
-        return els[i].value || '-';
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    var f = this;
+    var btn = f.querySelector('button[type="submit"]');
+
+    function getVal(name) {
+      var fields = f.querySelectorAll('[name]');
+      for (var i = 0; i < fields.length; i++) {
+        var el = fields[i];
+        if (el.getAttribute('name') === name && el.type !== 'radio' && el.type !== 'checkbox') {
+          return (el.value || '').trim() || '-';
+        }
       }
+      return '-';
     }
-    return '-';
-  }
 
-  function getChecks(name) {
-    var vals = [];
-    f.querySelectorAll('input[type="checkbox"][name="' + CSS.escape(name) + '"]:checked').forEach(function(el) {
-      vals.push(el.value);
-    });
-    return vals.length ? vals.join(', ') : '-';
-  }
+    function getChecks(name) {
+      var vals = [];
+      f.querySelectorAll('input[type="checkbox"][name="' + CSS.escape(name) + '"]:checked').forEach(function (el) {
+        vals.push(el.value);
+      });
+      return vals.length ? vals.join(', ') : '-';
+    }
 
-  function section(titulo, texto) {
-    if (!texto || texto === '-') return '';
-    return '
+    function bloco(titulo, conteudo) {
+      if (!conteudo || conteudo === '-') return '';
+      return '
 
 ' + titulo + '
-' + texto;
-  }
-
-  var dados =
-    'Nome: ' + getVal('Nome Completo') + '
-' +
-    'Nascimento: ' + getVal('Data de Nascimento') + '
-' +
-    'WhatsApp: ' + getVal('WhatsApp') + '
-' +
-    'E-mail: ' + getVal('Email') + '
-' +
-    'Cidade/Estado: ' + getVal('Cidade e Estado');
-
-  var areas =
-    'Saúde física: ' + getVal('Saúde Física (nota)') + '
-' +
-    'Saúde emocional: ' + getVal('Saúde Emocional (nota)') + '
-' +
-    'Relacionamentos: ' + getVal('Relacionamentos (nota)') + '
-' +
-    'Amizades: ' + getVal('Amizades (nota)') + '
-' +
-    'Saúde espiritual: ' + getVal('Saúde Espiritual (nota)') + '
-' +
-    'Trabalho e carreira: ' + getVal('Trabalho e Carreira (nota)') + '
-' +
-    'Prosperidade financeira: ' + getVal('Prosperidade Financeira (nota)') + '
-' +
-    'Sentido de propósito: ' + getVal('Sentido de Propósito (nota)') + '
-' +
-    'Assertividade: ' + getVal('Assertividade (nota)') + '
-' +
-    'Gestão do tempo: ' + getVal('Gestão do Tempo (nota)');
-
-  var objetivos =
-    'Vida profissional: ' + getVal('Objetivo — Vida Profissional') + '
-' +
-    'Vida financeira: ' + getVal('Objetivo — Vida Financeira') + '
-' +
-    'Saúde e bem-estar: ' + getVal('Objetivo — Saúde e Bem-estar') + '
-' +
-    'Relacionamentos: ' + getVal('Objetivo — Relacionamentos') + '
-' +
-    'Saúde emocional: ' + getVal('Objetivo — Saúde Emocional') + '
-' +
-    'Espiritualidade: ' + getVal('Objetivo — Espiritualidade');
-
-  var recursos =
-    'O que já ajudou antes: ' + getVal('O que já ajudou antes') + '
-' +
-    'Pontos fortes: ' + getVal('Pontos fortes') + '
-' +
-    'Habilidades que quer desenvolver: ' + getVal('Habilidades que quer desenvolver');
-
-  var saude =
-    'Faz psicoterapia ou usa medicação: ' + getVal('Faz psicoterapia ou usa medicação') + '
-' +
-    'Saúde complementar: ' + getChecks('Saúde — Histórico complementar');
-
-  var padroes =
-    'Emocional: ' + getChecks('Emocional - padrao') + '
-' +
-    'Relacionamentos: ' + getChecks('Relacionamentos - padrao') + '
-' +
-    'Espiritualidade: ' + getChecks('Espiritualidade - padrao') + '
-' +
-    'Carreira: ' + getChecks('Carreira - padrao') + '
-' +
-    'Prosperidade: ' + getChecks('Prosperidade - padrao') + '
-' +
-    'Assertividade: ' + getChecks('Assertividade - padrao');
-
-  var sintNomes = [
-    'Sintomas físicos — Coração','Sintoma - Palpitacoes','Sintoma - Dor de cabeca',
-    'Sintoma - Enxaqueca','Sintoma - Dor muscular','Sintoma - Espasmos',
-    'Sintoma - Respiracao rapida','Sintoma - Falta de ar','Sintoma - Asma',
-    'Sintoma - Acne','Sintoma - Caspa','Sintoma - Transpiracao excessiva',
-    'Sintoma - Estomago','Sintoma - Gases','Sintoma - Constipacao',
-    'Sintoma - Diarreia','Sintoma - Alergia','Sintoma - Resfriados frequentes',
-    'Sintoma - Gripes frequentes','Sintoma - Erupcoes na pele'
-  ];
-  var sintsMarcados = [];
-  f.querySelectorAll('input[type="checkbox"]:checked').forEach(function(el) {
-    var n = el.getAttribute('name');
-    if (sintNomes.indexOf(n) !== -1) {
-      sintsMarcados.push(n.replace('Sintomas físicos — ', '').replace('Sintoma - ', ''));
-    }
-  });
-
-  var sintomas =
-    'Sintomas marcados: ' + (sintsMarcados.length ? sintsMarcados.join(', ') : 'Nenhum marcado') + '
-' +
-    'Outros sintomas: ' + getVal('Outros sintomas') + '
-' +
-    'Mal-estar frequente: ' + getVal('Sente mal-estar frequente') + '
-' +
-    'Em tratamento médico: ' + getVal('Em tratamento medico');
-
-  var relatorio =
-    '🌸 QUESTIONÁRIO HEAL YOUR LIFE® — TAROGUIANDO
-' +
-    'Formulário: cliente que já fechou atendimento
-' +
-    'Status: material pré-sessão para condução do processo
-' +
-    section('👤 DADOS PESSOAIS', dados) +
-    section('🌟 POR QUE BUSCA AJUDA AGORA', getVal('Por que busca ajuda agora')) +
-    section('📊 AVALIAÇÃO DAS ÁREAS DE VIDA', areas) +
-    section('🎯 OBJETIVOS PARA AS PRÓXIMAS SEMANAS', objetivos) +
-    section('💪 RECURSOS PESSOAIS', recursos) +
-    section('🏥 SAÚDE', saude) +
-    section('🔍 PADRÕES EMOCIONAIS E COMPORTAMENTAIS', padroes) +
-    section('🩺 SINTOMAS FÍSICOS', sintomas) +
-    section('✨ O QUE MAIS QUER COMPARTILHAR', getVal('O que mais quer compartilhar')) +
-    '
-
-Enviado via taroguiando.com.br/questionario-hyl.html';
-
-  var data = new FormData();
-  data.append('_subject', '🌸 Novo Questionário HYL - Cliente Taroguiando');
-  data.append('Origem', 'Questionário HYL / Cliente que já fechou atendimento');
-  data.append('Nome completo', getVal('Nome Completo'));
-  data.append('E-mail', getVal('Email'));
-  data.append('WhatsApp', getVal('WhatsApp'));
-  data.append('🌸 RELATÓRIO PREMIUM', relatorio);
-
-  try {
-    if (btn) {
-      btn.disabled = true;
-      btn.dataset.originalText = btn.textContent;
-      btn.textContent = 'Enviando...';
+' + '━━━━━━━━━━━━━━━━━━━━
+' + conteudo;
     }
 
-    var response = await fetch(f.action, {
-      method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
+    var dados =
+      'Nome: ' + getVal('Nome Completo') + '
+' +
+      'Nascimento: ' + getVal('Data de Nascimento') + '
+' +
+      'WhatsApp: ' + getVal('WhatsApp') + '
+' +
+      'E-mail: ' + getVal('Email') + '
+' +
+      'Cidade/Estado: ' + getVal('Cidade e Estado');
+
+    var areas =
+      'Saúde física: ' + getVal('Saúde Física (nota)') + '
+' +
+      'Saúde emocional: ' + getVal('Saúde Emocional (nota)') + '
+' +
+      'Relacionamentos: ' + getVal('Relacionamentos (nota)') + '
+' +
+      'Amizades: ' + getVal('Amizades (nota)') + '
+' +
+      'Saúde espiritual: ' + getVal('Saúde Espiritual (nota)') + '
+' +
+      'Trabalho e carreira: ' + getVal('Trabalho e Carreira (nota)') + '
+' +
+      'Prosperidade financeira: ' + getVal('Prosperidade Financeira (nota)') + '
+' +
+      'Sentido de propósito: ' + getVal('Sentido de Propósito (nota)') + '
+' +
+      'Assertividade: ' + getVal('Assertividade (nota)') + '
+' +
+      'Gestão do tempo: ' + getVal('Gestão do Tempo (nota)');
+
+    var objetivos =
+      'Vida profissional: ' + getVal('Objetivo — Vida Profissional') + '
+' +
+      'Vida financeira: ' + getVal('Objetivo — Vida Financeira') + '
+' +
+      'Saúde e bem-estar: ' + getVal('Objetivo — Saúde e Bem-estar') + '
+' +
+      'Relacionamentos: ' + getVal('Objetivo — Relacionamentos') + '
+' +
+      'Saúde emocional: ' + getVal('Objetivo — Saúde Emocional') + '
+' +
+      'Espiritualidade: ' + getVal('Objetivo — Espiritualidade');
+
+    var recursos =
+      'O que já ajudou antes: ' + getVal('O que já ajudou antes') + '
+' +
+      'Pontos fortes: ' + getVal('Pontos fortes') + '
+' +
+      'Habilidades que quer desenvolver: ' + getVal('Habilidades que quer desenvolver');
+
+    var saude =
+      'Faz psicoterapia ou usa medicação: ' + getVal('Faz psicoterapia ou usa medicação') + '
+' +
+      'Saúde complementar: ' + getChecks('Saúde — Histórico complementar');
+
+    var padroes =
+      'Emocional: ' + getChecks('Emocional - padrao') + '
+' +
+      'Relacionamentos: ' + getChecks('Relacionamentos - padrao') + '
+' +
+      'Espiritualidade: ' + getChecks('Espiritualidade - padrao') + '
+' +
+      'Carreira: ' + getChecks('Carreira - padrao') + '
+' +
+      'Prosperidade: ' + getChecks('Prosperidade - padrao') + '
+' +
+      'Assertividade: ' + getChecks('Assertividade - padrao');
+
+    var sintNomes = [
+      'Sintomas físicos — Coração','Sintoma - Palpitacoes','Sintoma - Dor de cabeca',
+      'Sintoma - Enxaqueca','Sintoma - Dor muscular','Sintoma - Espasmos',
+      'Sintoma - Respiracao rapida','Sintoma - Falta de ar','Sintoma - Asma',
+      'Sintoma - Acne','Sintoma - Caspa','Sintoma - Transpiracao excessiva',
+      'Sintoma - Estomago','Sintoma - Gases','Sintoma - Constipacao',
+      'Sintoma - Diarreia','Sintoma - Alergia','Sintoma - Resfriados frequentes',
+      'Sintoma - Gripes frequentes','Sintoma - Erupcoes na pele'
+    ];
+
+    var sintsMarcados = [];
+    f.querySelectorAll('input[type="checkbox"]:checked').forEach(function (el) {
+      var n = el.getAttribute('name');
+      if (sintNomes.indexOf(n) !== -1) {
+        sintsMarcados.push(n.replace('Sintomas físicos — ', '').replace('Sintoma - ', ''));
+      }
     });
 
-    if (response.ok) {
-      f.reset();
-      alert('Questionário enviado com sucesso. Obrigada! 💜');
-      if (btn) btn.textContent = 'Enviado';
-    } else {
-      alert('Não consegui enviar agora. Tente novamente em alguns minutos.');
+    var sintomas =
+      'Sintomas marcados: ' + (sintsMarcados.length ? sintsMarcados.join(', ') : 'Nenhum marcado') + '
+' +
+      'Outros sintomas: ' + getVal('Outros sintomas') + '
+' +
+      'Mal-estar frequente: ' + getVal('Sente mal-estar frequente') + '
+' +
+      'Em tratamento médico: ' + getVal('Em tratamento medico');
+
+    var relatorio =
+      '🌸 QUESTIONÁRIO HEAL YOUR LIFE® — TAROGUIANDO
+' +
+      'Cliente que já fechou atendimento / material pré-sessão
+' +
+      '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' +
+      bloco('👤 DADOS PESSOAIS', dados) +
+      bloco('🌟 POR QUE BUSCA AJUDA AGORA', getVal('Por que busca ajuda agora')) +
+      bloco('📊 AVALIAÇÃO DAS ÁREAS DE VIDA', areas) +
+      bloco('🎯 OBJETIVOS PARA AS PRÓXIMAS SEMANAS', objetivos) +
+      bloco('💪 RECURSOS PESSOAIS', recursos) +
+      bloco('🏥 SAÚDE', saude) +
+      bloco('🔍 PADRÕES EMOCIONAIS E COMPORTAMENTAIS', padroes) +
+      bloco('🩺 SINTOMAS FÍSICOS', sintomas) +
+      bloco('✨ O QUE MAIS QUER COMPARTILHAR', getVal('O que mais quer compartilhar')) +
+      '
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+' +
+      'Enviado via taroguiando.com.br/questionario_hyl.html';
+
+    // ENVIO LIMPO: cria um FormData novo do zero.
+    var data = new FormData();
+    data.append('_subject', '🌸 Novo Questionário HYL - Cliente Taroguiando');
+    data.append('Origem', 'Questionário HYL / Cliente que já fechou atendimento');
+    data.append('Nome completo', getVal('Nome Completo'));
+    data.append('E-mail', getVal('Email'));
+    data.append('WhatsApp', getVal('WhatsApp'));
+    data.append('🌸 RELATÓRIO PREMIUM', relatorio);
+
+    try {
+      if (btn) {
+        btn.disabled = true;
+        btn.dataset.originalText = btn.textContent;
+        btn.textContent = 'Enviando...';
+      }
+
+      var response = await fetch(f.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        f.reset();
+        alert('Questionário enviado com sucesso. Obrigada! 💜');
+        if (btn) btn.textContent = 'Enviado';
+      } else {
+        alert('Não consegui enviar agora. Tente novamente em alguns minutos.');
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = btn.dataset.originalText || 'Enviar';
+        }
+      }
+    } catch (err) {
+      alert('Não consegui enviar agora. Confira sua conexão e tente novamente.');
       if (btn) {
         btn.disabled = false;
         btn.textContent = btn.dataset.originalText || 'Enviar';
       }
     }
-  } catch (err) {
-    alert('Não consegui enviar agora. Confira sua conexão e tente novamente.');
-    if (btn) {
-      btn.disabled = false;
-      btn.textContent = btn.dataset.originalText || 'Enviar';
-    }
-  }
-});
+  });
+})();
 </script>
 </body>
 </html>

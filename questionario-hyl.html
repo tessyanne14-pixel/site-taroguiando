@@ -440,10 +440,10 @@ button[type="submit"]:active {
 
 <div class="container">
 <form action="https://formspree.io/f/mykownze" method="POST">
-  <input type="hidden" name="_subject" value="💜 Novo Questionário HYL — Cliente Cadastrada">
-  <input type="hidden" name="Origem do formulário" value="Questionário completo HYL / Cliente cadastrada">
+  <input type="hidden" name="_subject" value="🌸 Novo Questionário HYL - Cliente Taroguiando">
+  <input type="hidden" name="Origem" value="Questionário HYL / Cliente que já fechou atendimento">
 
-  <!-- DADOS PESSOAIS -->
+<!-- DADOS PESSOAIS -->
   <div class="section">
     <div class="section-label">Identificação</div>
     <div class="section-title">Dados Pessoais</div>
@@ -687,178 +687,207 @@ button[type="submit"]:active {
 
 
 
+
+
 <script>
-document.querySelector('form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  var f = this;
+(function () {
+  var form = document.querySelector('form');
+  if (!form) return;
 
-  // Helper: get value by name attr (handles accents)
-  function getVal(name) {
-    var els = f.querySelectorAll('[name]');
-    for (var i=0; i<els.length; i++) {
-      if (els[i].getAttribute('name') === name && els[i].type !== 'radio' && els[i].type !== 'checkbox') {
-        return els[i].value || '-';
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    var f = this;
+    var btn = f.querySelector('button[type="submit"]');
+
+    function getVal(name) {
+      var fields = f.querySelectorAll('[name]');
+      for (var i = 0; i < fields.length; i++) {
+        var el = fields[i];
+        if (el.getAttribute('name') === name && el.type !== 'radio' && el.type !== 'checkbox') {
+          return (el.value || '').trim() || '-';
+        }
+      }
+      return '-';
+    }
+
+    function getChecks(name) {
+      var vals = [];
+      f.querySelectorAll('input[type="checkbox"][name="' + CSS.escape(name) + '"]:checked').forEach(function (el) {
+        vals.push(el.value);
+      });
+      return vals.length ? vals.join(', ') : '-';
+    }
+
+    function bloco(titulo, conteudo) {
+      if (!conteudo || conteudo === '-') return '';
+      return '
+
+' + titulo + '
+' + '━━━━━━━━━━━━━━━━━━━━
+' + conteudo;
+    }
+
+    var dados =
+      'Nome: ' + getVal('Nome Completo') + '
+' +
+      'Nascimento: ' + getVal('Data de Nascimento') + '
+' +
+      'WhatsApp: ' + getVal('WhatsApp') + '
+' +
+      'E-mail: ' + getVal('Email') + '
+' +
+      'Cidade/Estado: ' + getVal('Cidade e Estado');
+
+    var areas =
+      'Saúde física: ' + getVal('Saúde Física (nota)') + '
+' +
+      'Saúde emocional: ' + getVal('Saúde Emocional (nota)') + '
+' +
+      'Relacionamentos: ' + getVal('Relacionamentos (nota)') + '
+' +
+      'Amizades: ' + getVal('Amizades (nota)') + '
+' +
+      'Saúde espiritual: ' + getVal('Saúde Espiritual (nota)') + '
+' +
+      'Trabalho e carreira: ' + getVal('Trabalho e Carreira (nota)') + '
+' +
+      'Prosperidade financeira: ' + getVal('Prosperidade Financeira (nota)') + '
+' +
+      'Sentido de propósito: ' + getVal('Sentido de Propósito (nota)') + '
+' +
+      'Assertividade: ' + getVal('Assertividade (nota)') + '
+' +
+      'Gestão do tempo: ' + getVal('Gestão do Tempo (nota)');
+
+    var objetivos =
+      'Vida profissional: ' + getVal('Objetivo — Vida Profissional') + '
+' +
+      'Vida financeira: ' + getVal('Objetivo — Vida Financeira') + '
+' +
+      'Saúde e bem-estar: ' + getVal('Objetivo — Saúde e Bem-estar') + '
+' +
+      'Relacionamentos: ' + getVal('Objetivo — Relacionamentos') + '
+' +
+      'Saúde emocional: ' + getVal('Objetivo — Saúde Emocional') + '
+' +
+      'Espiritualidade: ' + getVal('Objetivo — Espiritualidade');
+
+    var recursos =
+      'O que já ajudou antes: ' + getVal('O que já ajudou antes') + '
+' +
+      'Pontos fortes: ' + getVal('Pontos fortes') + '
+' +
+      'Habilidades que quer desenvolver: ' + getVal('Habilidades que quer desenvolver');
+
+    var saude =
+      'Faz psicoterapia ou usa medicação: ' + getVal('Faz psicoterapia ou usa medicação') + '
+' +
+      'Saúde complementar: ' + getChecks('Saúde — Histórico complementar');
+
+    var padroes =
+      'Emocional: ' + getChecks('Emocional - padrao') + '
+' +
+      'Relacionamentos: ' + getChecks('Relacionamentos - padrao') + '
+' +
+      'Espiritualidade: ' + getChecks('Espiritualidade - padrao') + '
+' +
+      'Carreira: ' + getChecks('Carreira - padrao') + '
+' +
+      'Prosperidade: ' + getChecks('Prosperidade - padrao') + '
+' +
+      'Assertividade: ' + getChecks('Assertividade - padrao');
+
+    var sintNomes = [
+      'Sintomas físicos — Coração','Sintoma - Palpitacoes','Sintoma - Dor de cabeca',
+      'Sintoma - Enxaqueca','Sintoma - Dor muscular','Sintoma - Espasmos',
+      'Sintoma - Respiracao rapida','Sintoma - Falta de ar','Sintoma - Asma',
+      'Sintoma - Acne','Sintoma - Caspa','Sintoma - Transpiracao excessiva',
+      'Sintoma - Estomago','Sintoma - Gases','Sintoma - Constipacao',
+      'Sintoma - Diarreia','Sintoma - Alergia','Sintoma - Resfriados frequentes',
+      'Sintoma - Gripes frequentes','Sintoma - Erupcoes na pele'
+    ];
+
+    var sintsMarcados = [];
+    f.querySelectorAll('input[type="checkbox"]:checked').forEach(function (el) {
+      var n = el.getAttribute('name');
+      if (sintNomes.indexOf(n) !== -1) {
+        sintsMarcados.push(n.replace('Sintomas físicos — ', '').replace('Sintoma - ', ''));
+      }
+    });
+
+    var sintomas =
+      'Sintomas marcados: ' + (sintsMarcados.length ? sintsMarcados.join(', ') : 'Nenhum marcado') + '
+' +
+      'Outros sintomas: ' + getVal('Outros sintomas') + '
+' +
+      'Mal-estar frequente: ' + getVal('Sente mal-estar frequente') + '
+' +
+      'Em tratamento médico: ' + getVal('Em tratamento medico');
+
+    var relatorio =
+      '🌸 QUESTIONÁRIO HEAL YOUR LIFE® — TAROGUIANDO
+' +
+      'Cliente que já fechou atendimento / material pré-sessão
+' +
+      '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' +
+      bloco('👤 DADOS PESSOAIS', dados) +
+      bloco('🌟 POR QUE BUSCA AJUDA AGORA', getVal('Por que busca ajuda agora')) +
+      bloco('📊 AVALIAÇÃO DAS ÁREAS DE VIDA', areas) +
+      bloco('🎯 OBJETIVOS PARA AS PRÓXIMAS SEMANAS', objetivos) +
+      bloco('💪 RECURSOS PESSOAIS', recursos) +
+      bloco('🏥 SAÚDE', saude) +
+      bloco('🔍 PADRÕES EMOCIONAIS E COMPORTAMENTAIS', padroes) +
+      bloco('🩺 SINTOMAS FÍSICOS', sintomas) +
+      bloco('✨ O QUE MAIS QUER COMPARTILHAR', getVal('O que mais quer compartilhar')) +
+      '
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+' +
+      'Enviado via taroguiando.com.br/questionario_hyl.html';
+
+    // ENVIO LIMPO: cria um FormData novo do zero.
+    var data = new FormData();
+    data.append('_subject', '🌸 Novo Questionário HYL - Cliente Taroguiando');
+    data.append('Origem', 'Questionário HYL / Cliente que já fechou atendimento');
+    data.append('Nome completo', getVal('Nome Completo'));
+    data.append('E-mail', getVal('Email'));
+    data.append('WhatsApp', getVal('WhatsApp'));
+    data.append('🌸 RELATÓRIO PREMIUM', relatorio);
+
+    try {
+      if (btn) {
+        btn.disabled = true;
+        btn.dataset.originalText = btn.textContent;
+        btn.textContent = 'Enviando...';
+      }
+
+      var response = await fetch(f.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        f.reset();
+        alert('Questionário enviado com sucesso. Obrigada! 💜');
+        if (btn) btn.textContent = 'Enviado';
+      } else {
+        alert('Não consegui enviar agora. Tente novamente em alguns minutos.');
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = btn.dataset.originalText || 'Enviar';
+        }
+      }
+    } catch (err) {
+      alert('Não consegui enviar agora. Confira sua conexão e tente novamente.');
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = btn.dataset.originalText || 'Enviar';
       }
     }
-    return '-';
-  }
-
-  // Helper: get checked radio
-  function getRadio(name) {
-    var els = f.querySelectorAll('input[type="radio"]:checked');
-    for (var i=0; i<els.length; i++) {
-      if (els[i].getAttribute('name') === name) return els[i].value;
-    }
-    return '-';
-  }
-
-  // Helper: get checked checkboxes
-  function getChecks(name) {
-    var els = f.querySelectorAll('input[type="checkbox"]:checked');
-    var vals = [];
-    for (var i=0; i<els.length; i++) {
-      if (els[i].getAttribute('name') === name) vals.push(els[i].value);
-    }
-    return vals.length ? vals.join(', ') : '-';
-  }
-
-  // Helper: get scale from SELECT element
-  function getScale(name) {
-    var els = f.querySelectorAll('select');
-    for (var i=0; i<els.length; i++) {
-      if (els[i].getAttribute('name') === name && els[i].value) {
-        return els[i].value + '/10';
-      }
-    }
-    return '-';
-  }
-
-  // Format date
-  var dt = f.querySelector('[name="Data de Nascimento"]');
-  if (dt && dt.value) {
-    var p = dt.value.split('-');
-    if (p.length===3) dt.value = p[2]+'/'+p[1]+'/'+p[0];
-  }
-  // Format WhatsApp
-  var wa = f.querySelector('[name="WhatsApp"]');
-  if (wa && wa.value) {
-    var n = wa.value.replace(/\D/g,'');
-    if (n.length===11) wa.value='('+n.slice(0,2)+') '+n.slice(2,7)+'-'+n.slice(7);
-    else if (n.length===10) wa.value='('+n.slice(0,2)+') '+n.slice(2,6)+'-'+n.slice(6);
-  }
-
-  var msg = '';
-  msg += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
-  msg += '  NOVO QUESTIONÁRIO HYL\n';
-  msg += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
-
-  msg += '👤 DADOS PESSOAIS\n';
-  msg += '─────────────────\n';
-  msg += 'Nome: ' + getVal('Nome Completo') + '\n';
-  msg += 'Nascimento: ' + getVal('Data de Nascimento') + '\n';
-  msg += 'WhatsApp: ' + getVal('WhatsApp') + '\n';
-  msg += 'Email: ' + getVal('Email') + '\n';
-  msg += 'Cidade: ' + getVal('Cidade e Estado') + '\n\n';
-
-  msg += '🌟 POR QUE BUSCA AJUDA AGORA\n';
-  msg += '──────────────────────────────\n';
-  msg += getVal('Por que busca ajuda agora') + '\n\n';
-
-  msg += '📊 AVALIAÇÃO DAS ÁREAS DE VIDA (1 a 10)\n';
-  msg += '─────────────────────────────────────────\n';
-  msg += 'Saúde Física:         ' + getScale('Saúde Física (nota)') + '\n';
-  msg += 'Saúde Emocional:      ' + getScale('Saúde Emocional (nota)') + '\n';
-  msg += 'Relacionamentos:       ' + getScale('Relacionamentos (nota)') + '\n';
-  msg += 'Amizades:              ' + getScale('Amizades (nota)') + '\n';
-  msg += 'Saúde Espiritual:     ' + getScale('Saúde Espiritual (nota)') + '\n';
-  msg += 'Trabalho e Carreira:   ' + getScale('Trabalho e Carreira (nota)') + '\n';
-  msg += 'Prosperidade Financ.:  ' + getScale('Prosperidade Financeira (nota)') + '\n';
-  msg += 'Sentido de Propósito: ' + getScale('Sentido de Propósito (nota)') + '\n';
-  msg += 'Assertividade:         ' + getScale('Assertividade (nota)') + '\n';
-  msg += 'Gestão do Tempo:      ' + getScale('Gestão do Tempo (nota)') + '\n\n';
-
-  msg += '🎯 OBJETIVOS PARA AS PRÓXIMAS SEMANAS\n';
-  msg += '───────────────────────────────────────\n';
-  msg += 'Vida profissional:  ' + getVal('Objetivo — Vida Profissional') + '\n';
-  msg += 'Vida financeira:    ' + getVal('Objetivo — Vida Financeira') + '\n';
-  msg += 'Saúde e bem-estar:  ' + getVal('Objetivo — Saúde e Bem-estar') + '\n';
-  msg += 'Relacionamentos:    ' + getVal('Objetivo — Relacionamentos') + '\n';
-  msg += 'Saúde emocional:    ' + getVal('Objetivo — Saúde Emocional') + '\n';
-  msg += 'Espiritualidade:    ' + getVal('Objetivo — Espiritualidade') + '\n\n';
-
-  msg += '💪 RECURSOS PESSOAIS\n';
-  msg += '─────────────────────\n';
-  msg += 'O que já ajudou antes: ' + getVal('O que já ajudou antes') + '\n';
-  msg += 'Pontos fortes: ' + getVal('Pontos fortes') + '\n';
-  msg += 'Habilidades a desenvolver: ' + getVal('Habilidades que quer desenvolver') + '\n\n';
-
-  msg += '🏥 SAÚDE\n';
-  msg += '─────────\n';
-  msg += 'Faz psicoterapia ou usa medicação: ' + getVal('Faz psicoterapia ou usa medicação') + '\n';
-  msg += 'Saúde complementar: ' + getChecks('Saúde — Histórico complementar') + '\n\n';
-
-  msg += '🔍 PADRÕES EMOCIONAIS E COMPORTAMENTAIS\n';
-  msg += '──────────────────────────────────────────\n';
-  msg += 'Emocional: ' + getChecks('Emocional - padrao') + '\n';
-  msg += 'Relacionamentos: ' + getChecks('Relacionamentos - padrao') + '\n';
-  msg += 'Espiritualidade: ' + getChecks('Espiritualidade - padrao') + '\n';
-  msg += 'Carreira: ' + getChecks('Carreira - padrao') + '\n';
-  msg += 'Prosperidade: ' + getChecks('Prosperidade - padrao') + '\n';
-  msg += 'Assertividade: ' + getChecks('Assertividade - padrao') + '\n\n';
-
-  msg += '🩺 SINTOMAS FÍSICOS\n';
-  msg += '────────────────────\n';
-  var sintNomes = [
-    'Sintomas físicos — Coração','Sintoma - Palpitacoes','Sintoma - Dor de cabeca',
-    'Sintoma - Enxaqueca','Sintoma - Dor muscular','Sintoma - Espasmos',
-    'Sintoma - Respiracao rapida','Sintoma - Falta de ar','Sintoma - Asma',
-    'Sintoma - Acne','Sintoma - Caspa','Sintoma - Transpiracao excessiva',
-    'Sintoma - Estomago','Sintoma - Gases','Sintoma - Constipacao',
-    'Sintoma - Diarreia','Sintoma - Alergia','Sintoma - Resfriados frequentes',
-    'Sintoma - Gripes frequentes','Sintoma - Erupcoes na pele'
-  ];
-  var sintsMarcados = [];
-  var allChecked = f.querySelectorAll('input[type="checkbox"]:checked');
-  for (var i=0; i<allChecked.length; i++) {
-    var n = allChecked[i].getAttribute('name');
-    if (sintNomes.indexOf(n) !== -1) {
-      sintsMarcados.push(n.replace('Sintomas físicos — ','').replace('Sintoma - ',''));
-    }
-  }
-  msg += (sintsMarcados.length ? sintsMarcados.join(', ') : 'Nenhum marcado') + '\n';
-  msg += 'Outros sintomas: ' + getVal('Outros sintomas') + '\n';
-  msg += 'Mal-estar frequente: ' + getVal('Sente mal-estar frequente') + '\n';
-  msg += 'Em tratamento médico: ' + getVal('Em tratamento medico') + '\n\n';
-
-  var extra = getVal('O que mais quer compartilhar');
-  if (extra && extra !== '-') {
-    msg += '✨ O QUE MAIS QUER COMPARTILHAR\n';
-    msg += '─────────────────────────────────\n';
-    msg += extra + '\n\n';
-  }
-
-  msg += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
-  msg += '  Enviado via questionariohyl.netlify.app\n';
-  msg += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
-
-  // Set hidden message field
-  var msgField = f.querySelector('[name="Respostas Completas"]');
-  if (!msgField) {
-    msgField = document.createElement('textarea');
-    msgField.name = 'Respostas Completas';
-    msgField.style.display = 'none';
-    f.appendChild(msgField);
-  }
-  msgField.value = msg;
-
-  // Disable other fields
-  f.querySelectorAll('input:not([type=hidden]):not([name="Nome Completo"]):not([name="WhatsApp"]):not([name="Email"]), textarea:not([name="Respostas Completas"]), select').forEach(function(el){
-    el.disabled = true;
   });
-
-  f.submit();
-});
+})();
 </script>
-
 </body>
 </html>
