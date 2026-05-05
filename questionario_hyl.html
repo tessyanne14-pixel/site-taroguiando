@@ -441,7 +441,7 @@ button[type="submit"]:active {
 <div class="container">
 <form action="https://formspree.io/f/mykownze" method="POST">
   <input type="hidden" name="_subject" value="🌸 Novo Questionário HYL - Cliente Taroguiando">
-  <input type="hidden" name="📌 Origem" value="Questionário HYL / Cliente que já fechou atendimento">
+  <input type="hidden" name="Origem" value="Questionário HYL / Cliente que já fechou atendimento">
 
 <!-- DADOS PESSOAIS -->
   <div class="section">
@@ -688,9 +688,10 @@ button[type="submit"]:active {
 
 
 <script>
-document.querySelector('form').addEventListener('submit', function(e) {
+document.querySelector('form').addEventListener('submit', async function(e) {
   e.preventDefault();
   var f = this;
+  var btn = f.querySelector('button[type="submit"]');
 
   function getVal(name) {
     var els = f.querySelectorAll('[name]');
@@ -702,10 +703,6 @@ document.querySelector('form').addEventListener('submit', function(e) {
     return '-';
   }
 
-  function getScale(name) {
-    return getVal(name);
-  }
-
   function getChecks(name) {
     var vals = [];
     f.querySelectorAll('input[type="checkbox"][name="' + CSS.escape(name) + '"]:checked').forEach(function(el) {
@@ -714,12 +711,12 @@ document.querySelector('form').addEventListener('submit', function(e) {
     return vals.length ? vals.join(', ') : '-';
   }
 
-  function addSection(parts, titulo, conteudo) {
-    if (!conteudo || conteudo === '-') return;
-    parts.push('');
-    parts.push(titulo);
-    parts.push('');
-    parts.push(conteudo);
+  function section(titulo, texto) {
+    if (!texto || texto === '-') return '';
+    return '
+
+' + titulo + '
+' + texto;
   }
 
   var dados =
@@ -734,25 +731,25 @@ document.querySelector('form').addEventListener('submit', function(e) {
     'Cidade/Estado: ' + getVal('Cidade e Estado');
 
   var areas =
-    'Saúde física: ' + getScale('Saúde Física (nota)') + '
+    'Saúde física: ' + getVal('Saúde Física (nota)') + '
 ' +
-    'Saúde emocional: ' + getScale('Saúde Emocional (nota)') + '
+    'Saúde emocional: ' + getVal('Saúde Emocional (nota)') + '
 ' +
-    'Relacionamentos: ' + getScale('Relacionamentos (nota)') + '
+    'Relacionamentos: ' + getVal('Relacionamentos (nota)') + '
 ' +
-    'Amizades: ' + getScale('Amizades (nota)') + '
+    'Amizades: ' + getVal('Amizades (nota)') + '
 ' +
-    'Saúde espiritual: ' + getScale('Saúde Espiritual (nota)') + '
+    'Saúde espiritual: ' + getVal('Saúde Espiritual (nota)') + '
 ' +
-    'Trabalho e carreira: ' + getScale('Trabalho e Carreira (nota)') + '
+    'Trabalho e carreira: ' + getVal('Trabalho e Carreira (nota)') + '
 ' +
-    'Prosperidade financeira: ' + getScale('Prosperidade Financeira (nota)') + '
+    'Prosperidade financeira: ' + getVal('Prosperidade Financeira (nota)') + '
 ' +
-    'Sentido de propósito: ' + getScale('Sentido de Propósito (nota)') + '
+    'Sentido de propósito: ' + getVal('Sentido de Propósito (nota)') + '
 ' +
-    'Assertividade: ' + getScale('Assertividade (nota)') + '
+    'Assertividade: ' + getVal('Assertividade (nota)') + '
 ' +
-    'Gestão do tempo: ' + getScale('Gestão do Tempo (nota)');
+    'Gestão do tempo: ' + getVal('Gestão do Tempo (nota)');
 
   var objetivos =
     'Vida profissional: ' + getVal('Objetivo — Vida Profissional') + '
@@ -818,41 +815,65 @@ document.querySelector('form').addEventListener('submit', function(e) {
 ' +
     'Em tratamento médico: ' + getVal('Em tratamento medico');
 
-  var parts = [];
-  parts.push('🌸 QUESTIONÁRIO HEAL YOUR LIFE® — TAROGUIANDO');
-  parts.push('');
-  parts.push('Cliente já fechou atendimento. Use este material como mapa inicial para a condução do processo.');
-  addSection(parts, '👤 DADOS PESSOAIS', dados);
-  addSection(parts, '🌟 POR QUE BUSCA AJUDA AGORA', getVal('Por que busca ajuda agora'));
-  addSection(parts, '📊 AVALIAÇÃO DAS ÁREAS DE VIDA', areas);
-  addSection(parts, '🎯 OBJETIVOS PARA AS PRÓXIMAS SEMANAS', objetivos);
-  addSection(parts, '💪 RECURSOS PESSOAIS', recursos);
-  addSection(parts, '🏥 SAÚDE', saude);
-  addSection(parts, '🔍 PADRÕES EMOCIONAIS E COMPORTAMENTAIS', padroes);
-  addSection(parts, '🩺 SINTOMAS FÍSICOS', sintomas);
-  addSection(parts, '✨ O QUE MAIS QUER COMPARTILHAR', getVal('O que mais quer compartilhar'));
-  parts.push('');
-  parts.push('────────────────────────');
-  parts.push('Enviado via taroguiando.com.br/questionario-hyl.html');
+  var relatorio =
+    '🌸 QUESTIONÁRIO HEAL YOUR LIFE® — TAROGUIANDO
+' +
+    'Formulário: cliente que já fechou atendimento
+' +
+    'Status: material pré-sessão para condução do processo
+' +
+    section('👤 DADOS PESSOAIS', dados) +
+    section('🌟 POR QUE BUSCA AJUDA AGORA', getVal('Por que busca ajuda agora')) +
+    section('📊 AVALIAÇÃO DAS ÁREAS DE VIDA', areas) +
+    section('🎯 OBJETIVOS PARA AS PRÓXIMAS SEMANAS', objetivos) +
+    section('💪 RECURSOS PESSOAIS', recursos) +
+    section('🏥 SAÚDE', saude) +
+    section('🔍 PADRÕES EMOCIONAIS E COMPORTAMENTAIS', padroes) +
+    section('🩺 SINTOMAS FÍSICOS', sintomas) +
+    section('✨ O QUE MAIS QUER COMPARTILHAR', getVal('O que mais quer compartilhar')) +
+    '
 
-  var premium = document.createElement('textarea');
-  premium.name = '🌸 RELATÓRIO PREMIUM — QUESTIONÁRIO HYL';
-  premium.style.display = 'none';
-  premium.value = parts.join('
-');
+Enviado via taroguiando.com.br/questionario-hyl.html';
 
-  f.querySelectorAll('[name="Respostas Completas"], [name="🧾 RESUMO ORGANIZADO"], [name="🌸 RELATÓRIO PREMIUM — QUESTIONÁRIO HYL"]').forEach(function(el) {
-    el.remove();
-  });
-  f.appendChild(premium);
+  var data = new FormData();
+  data.append('_subject', '🌸 Novo Questionário HYL - Cliente Taroguiando');
+  data.append('Origem', 'Questionário HYL / Cliente que já fechou atendimento');
+  data.append('Nome completo', getVal('Nome Completo'));
+  data.append('E-mail', getVal('Email'));
+  data.append('WhatsApp', getVal('WhatsApp'));
+  data.append('🌸 RELATÓRIO PREMIUM', relatorio);
 
-  // Mantém só dados essenciais + relatório premium para o e-mail ficar limpo.
-  f.querySelectorAll('input:not([type=hidden]), textarea, select').forEach(function(el) {
-    var keep = ['Nome Completo', 'WhatsApp', 'Email', '🌸 RELATÓRIO PREMIUM — QUESTIONÁRIO HYL'];
-    if (keep.indexOf(el.name) === -1) el.disabled = true;
-  });
+  try {
+    if (btn) {
+      btn.disabled = true;
+      btn.dataset.originalText = btn.textContent;
+      btn.textContent = 'Enviando...';
+    }
 
-  f.submit();
+    var response = await fetch(f.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (response.ok) {
+      f.reset();
+      alert('Questionário enviado com sucesso. Obrigada! 💜');
+      if (btn) btn.textContent = 'Enviado';
+    } else {
+      alert('Não consegui enviar agora. Tente novamente em alguns minutos.');
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = btn.dataset.originalText || 'Enviar';
+      }
+    }
+  } catch (err) {
+    alert('Não consegui enviar agora. Confira sua conexão e tente novamente.');
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = btn.dataset.originalText || 'Enviar';
+    }
+  }
 });
 </script>
 </body>

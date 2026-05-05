@@ -349,7 +349,7 @@ button[type="submit"]:active { transform: translateY(-1px) scale(1.01); }
 <div class="container">
 <form action="https://formspree.io/f/xnjwdgqk" method="POST">
   <input type="hidden" name="_subject" value="✨ Nova Sessão de Clareza - Taroguiando">
-  <input type="hidden" name="📌 Origem" value="Sessão de Clareza Gratuita / Leitura Inicial">
+  <input type="hidden" name="Origem" value="Sessão de Clareza Gratuita / Leitura Inicial">
 
 <!-- DADOS PESSOAIS -->
   <div class="section">
@@ -515,9 +515,10 @@ button[type="submit"]:active { transform: translateY(-1px) scale(1.01); }
 
 
 <script>
-document.querySelector('form').addEventListener('submit', function(e) {
+document.querySelector('form').addEventListener('submit', async function(e) {
   e.preventDefault();
   var f = this;
+  var btn = f.querySelector('button[type="submit"]');
 
   function getVal(name) {
     var r = '-';
@@ -540,12 +541,12 @@ document.querySelector('form').addEventListener('submit', function(e) {
     return vals.length ? vals.join(', ') : '-';
   }
 
-  function addSection(parts, titulo, conteudo) {
-    if (!conteudo || conteudo === '-') return;
-    parts.push('');
-    parts.push(titulo);
-    parts.push(''); 
-    parts.push(conteudo);
+  function section(titulo, texto) {
+    if (!texto || texto === '-') return '';
+    return '
+
+' + titulo + '
+' + texto;
   }
 
   var dados =
@@ -580,44 +581,66 @@ document.querySelector('form').addEventListener('submit', function(e) {
 ' +
     'Gestão do tempo: ' + getRadio('Gestão do Tempo');
 
-  var parts = [];
-  parts.push('✨ NOVA SESSÃO DE CLAREZA — TAROGUIANDO');
-  parts.push('');
-  parts.push('Um novo formulário de leitura inicial foi preenchido.');
-  parts.push('Use as respostas abaixo para identificar padrões, dores principais e oportunidade de convite para a sessão de clareza.');
-  addSection(parts, '👤 DADOS PESSOAIS', dados);
-  addSection(parts, '🧭 O QUE ESTÁ ACONTECENDO', getVal('O que está acontecendo'));
-  addSection(parts, '🌙 O QUE MAIS TIRA O SONO', getVal('O que mais tira o sono'));
-  addSection(parts, '📍 NÍVEL DE IMPACTO NA VIDA', getRadio('Nível de impacto na vida'));
-  addSection(parts, '🔁 PADRÕES QUE PERCEBE', getVal('Padrões que percebe'));
-  addSection(parts, '💜 A PESSOA SE IDENTIFICA COM', getChecks('Me identifico com'));
-  addSection(parts, '🧠 PENSAMENTOS RECORRENTES', getVal('Pensamentos recorrentes'));
-  addSection(parts, '📊 AVALIAÇÃO DAS ÁREAS DE VIDA', areas);
-  addSection(parts, '⚕️ CIÊNCIA SOBRE ACOMPANHAMENTO MÉDICO', getRadio('Ciente que não substitui acompanhamento médico'));
-  addSection(parts, '📝 ALGO MAIS A COMPARTILHAR', getVal('Algo mais a compartilhar'));
-  parts.push('');
-  parts.push('────────────────────────');
-  parts.push('Enviado via taroguiando.com.br/leitura-inicial.html');
+  var relatorio =
+    '✨ NOVA SESSÃO DE CLAREZA — TAROGUIANDO
+' +
+    'Formulário: Leitura Inicial / Sessão de Clareza Gratuita
+' +
+    'Status: lead novo para triagem
+' +
+    section('👤 DADOS PESSOAIS', dados) +
+    section('🧭 O QUE ESTÁ ACONTECENDO', getVal('O que está acontecendo')) +
+    section('🌙 O QUE MAIS TIRA O SONO', getVal('O que mais tira o sono')) +
+    section('📍 NÍVEL DE IMPACTO NA VIDA', getRadio('Nível de impacto na vida')) +
+    section('🔁 PADRÕES QUE PERCEBE', getVal('Padrões que percebe')) +
+    section('💜 A PESSOA SE IDENTIFICA COM', getChecks('Me identifico com')) +
+    section('🧠 PENSAMENTOS RECORRENTES', getVal('Pensamentos recorrentes')) +
+    section('📊 AVALIAÇÃO DAS ÁREAS DE VIDA', areas) +
+    section('⚕️ CIÊNCIA SOBRE ACOMPANHAMENTO MÉDICO', getRadio('Ciente que não substitui acompanhamento médico')) +
+    section('📝 ALGO MAIS A COMPARTILHAR', getVal('Algo mais a compartilhar')) +
+    '
 
-  var premium = document.createElement('textarea');
-  premium.name = '✨ RELATÓRIO PREMIUM — LEITURA INICIAL';
-  premium.style.display = 'none';
-  premium.value = parts.join('
-');
+Enviado via taroguiando.com.br/leitura-inicial.html';
 
-  // Remove summaries antigos, caso existam
-  f.querySelectorAll('[name="Respostas Completas"], [name="🧾 RESUMO ORGANIZADO"], [name="✨ RELATÓRIO PREMIUM — LEITURA INICIAL"]').forEach(function(el) {
-    el.remove();
-  });
-  f.appendChild(premium);
+  var data = new FormData();
+  data.append('_subject', '✨ Nova Sessão de Clareza - Taroguiando');
+  data.append('Origem', 'Sessão de Clareza Gratuita / Leitura Inicial');
+  data.append('Nome completo', getVal('Nome Completo'));
+  data.append('E-mail', getVal('Email'));
+  data.append('WhatsApp', getVal('WhatsApp'));
+  data.append('✨ RELATÓRIO PREMIUM', relatorio);
 
-  // Mantém só dados essenciais + relatório premium para o e-mail ficar limpo.
-  f.querySelectorAll('input:not([type=hidden]), textarea, select').forEach(function(el) {
-    var keep = ['Nome Completo', 'WhatsApp', 'Email', '✨ RELATÓRIO PREMIUM — LEITURA INICIAL'];
-    if (keep.indexOf(el.name) === -1) el.disabled = true;
-  });
+  try {
+    if (btn) {
+      btn.disabled = true;
+      btn.dataset.originalText = btn.textContent;
+      btn.textContent = 'Enviando...';
+    }
 
-  f.submit();
+    var response = await fetch(f.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (response.ok) {
+      f.reset();
+      alert('Formulário enviado com sucesso. Obrigada! 💜');
+      if (btn) btn.textContent = 'Enviado';
+    } else {
+      alert('Não consegui enviar agora. Tente novamente em alguns minutos.');
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = btn.dataset.originalText || 'Enviar';
+      }
+    }
+  } catch (err) {
+    alert('Não consegui enviar agora. Confira sua conexão e tente novamente.');
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = btn.dataset.originalText || 'Enviar';
+    }
+  }
 });
 </script>
 </body>
