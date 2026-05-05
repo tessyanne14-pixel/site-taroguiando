@@ -1,0 +1,20 @@
+SITE TAROGUIANDO - pronto para Vercel
+
+Arquivos principais:
+- index.html: site principal
+- leitura-inicial.html: formulário de sessão de clareza gratuita
+- questionario-hyl.html: questionário completo HYL
+- vercel.json: configuração simples para URLs limpas no Vercel
+
+Como publicar:
+1. Entre no Vercel.
+2. Clique em Add New > Project ou procure a área de upload manual.
+3. Arraste esta pasta inteira OU o arquivo ZIP.
+4. Se pedir framework, escolha Other.
+5. Build Command: deixe vazio.
+6. Output Directory: deixe vazio ou use ".".
+7. Clique em Deploy.
+
+Observação:
+Os formulários continuam usando FormSubmit com o e-mail taroguiando.contato@gmail.com.
+Eles já usam _template=table para as respostas chegarem mais organizadas.
