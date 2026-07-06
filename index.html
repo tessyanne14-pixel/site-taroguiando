@@ -27,7 +27,14 @@ a{text-decoration:none;color:inherit;}
 .nav-links a{font-family:'Playfair Display SC',serif;font-size:10px;letter-spacing:2px;color:var(--mid);transition:color .2s;}
 .nav-links a:hover{color:var(--lav-deep);}
 .nav-cta{background:var(--lav-deep)!important;color:#fff!important;padding:10px 22px;border-radius:30px;}
-@media(max-width:900px){.nav{padding:0 20px;}.nav-links li:not(:last-child){display:none;}}
+@media(max-width:900px){
+  .nav{padding:0 16px;}
+  .nav-logo{font-size:21px;}
+  .nav-links{gap:8px;}
+  .nav-links li:not(:last-child):not(.nav-keep-mobile){display:none;}
+  .nav-keep-mobile a{font-size:9px;white-space:nowrap;}
+  .nav-cta{padding:8px 12px!important;font-size:9px!important;white-space:nowrap;}
+}
 
 /* HERO */
 .hero{
@@ -421,7 +428,7 @@ footer{background:var(--dark);padding:64px 48px 36px;}
     <li><a href="#historia">Sobre</a></li>
     <li><a href="#grupo">Grupo</a></li>
     <li><a href="#faq">FAQ</a></li>
-    <li><a href="/volta-para-si.html">E-book Grátis</a></li>
+    <li class="nav-keep-mobile"><a href="/volta-para-si.html">E-book Grátis</a></li>
     <li><a href="/leitura-inicial.html" target="_blank" class="nav-cta">Sessão Gratuita ✦</a></li>
   </ul>
 </nav>
