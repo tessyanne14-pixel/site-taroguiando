@@ -11,7 +11,7 @@ async function exigirLogin() {
   var { data } = await window.supabaseClient.auth.getSession();
   var session = data && data.session;
   if (!session || !session.user || session.user.email !== window.ADMIN_EMAIL) {
-    window.location.href = 'login.html';
+    window.location.href = '/admin/login.html';
     return null;
   }
   return session;

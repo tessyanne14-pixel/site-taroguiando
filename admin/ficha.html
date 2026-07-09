@@ -6,9 +6,9 @@
 <title>Painel Taroguiando — Ficha</title>
 <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display+SC:wght@400;700&family=Lato:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="../supabase-config.js"></script>
-<script src="auth-guard.js"></script>
-<link rel="stylesheet" href="admin.css">
+<script src="/supabase-config.js"></script>
+<script src="/admin/auth-guard.js"></script>
+<link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
 
@@ -90,7 +90,7 @@ function renderizarFicha(ficha) {
 
   html += '<div class="ficha-header no-print">' +
     '<div>' +
-      '<a href="index.html" class="btn" style="margin-bottom:14px;">← Voltar</a>' +
+      '<a href="/admin/index.html" class="btn" style="margin-bottom:14px;">← Voltar</a>' +
       '<h1>' + escapeHtml(ficha.nome || 'Sem nome') + '</h1>' +
       '<div class="meta">Enviado em ' + formatarData(ficha.created_at) + '</div>' +
     '</div>' +
