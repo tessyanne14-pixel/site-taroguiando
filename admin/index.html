@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Taroguiando — Clientes</title>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display+SC:wght@400;700&family=Lato:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../supabase-config.js"></script>
+<script src="auth-guard.js"></script>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-title">Taroguiando<small>PAINEL ADMINISTRATIVO</small></div>
+  <button class="btn" onclick="sair()">Sair</button>
+</div>
+
+<div class="container">
+  <div class="section-label">CLIENTES</div>
+  <div class="section-title" style="margin-bottom:6px;">Questionários recebidos</div>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <input type="search" id="busca" placeholder="Buscar por nome...">
+    </div>
+    <button class="btn" id="ordenar-btn">Mais recentes primeiro</button>
+  </div>
+
+  <div id="conteudo">
+    <div class="loading-state">Carregando fichas...</div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal" style="display:none;">
+  <div class="modal-box">
+    <div class="section-label" style="justify-content:center;">EXCLUIR FICHA</div>
+    <p>Tem certeza que deseja excluir a ficha de <strong id="modal-nome"></strong>? Essa ação não pode ser desfeita.</p>
+    <div class="modal-actions">
+      <button class="btn" onclick="fecharModal()">Cancelar</button>
+      <button class="btn btn-danger" id="confirmar-exclusao">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var clientes = [];
+var ordemRecente = true;
+var idParaExcluir = null;
+
+function formatarData(iso) {
+  var d = new Date(iso);
+  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }) +
+    ' · ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+function escapeHtml(str) {
+  return (str || '').replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+function renderizar() {
+  var termo = document.getElementById('busca').value.trim().toLowerCase();
+  var lista = clientes.filter(function (c) {
+    return !termo || (c.nome || '').toLowerCase().includes(termo);
+  });
+
+  lista.sort(function (a, b) {
+    var diff = new Date(a.created_at) - new Date(b.created_at);
+    return ordemRecente ? -diff : diff;
+  });
+
+  var conteudo = document.getElementById('conteudo');
+
+  if (!lista.length) {
+    conteudo.innerHTML = '<div class="empty-state">' +
+      (clientes.length ? 'Nenhuma cliente encontrada para essa busca.' : 'Nenhum questionário recebido ainda.') +
+      '</div>';
+    return;
+  }
+
+  conteudo.innerHTML = '<div class="client-grid">' + lista.map(function (c) {
+    return '' +
+      '<div class="client-card">' +
+        '<a class="card-link" href="ficha.html?id=' + encodeURIComponent(c.id) + '"></a>' +
+        '<div class="client-name">' + escapeHtml(c.nome || 'Sem nome') + '</div>' +
+        '<div class="client-date">' + formatarData(c.created_at) + '</div>' +
+        '<div class="client-info">' +
+          (c.email ? '<span><span class="label">E-mail:</span> ' + escapeHtml(c.email) + '</span>' : '') +
+          (c.whatsapp ? '<span><span class="label">WhatsApp:</span> ' + escapeHtml(c.whatsapp) + '</span>' : '') +
+        '</div>' +
+        '<div class="card-actions">' +
+          '<button class="icon-btn" title="Excluir ficha" onclick="abrirModal(event, \'' + c.id + '\', \'' + escapeHtml(c.nome || 'esta cliente').replace(/'/g, "\\'") + '\')">🗑</button>' +
+        '</div>' +
+      '</div>';
+  }).join('') + '</div>';
+}
+
+async function carregar() {
+  var { data, error } = await window.supabaseClient
+    .from('respostas_questionario')
+    .select('id, nome, email, whatsapp, created_at')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    document.getElementById('conteudo').innerHTML =
+      '<div class="empty-state">Não foi possível carregar as fichas. Tente recarregar a página.</div>';
+    return;
+  }
+
+  clientes = data || [];
+  renderizar();
+}
+
+function abrirModal(e, id, nome) {
+  e.preventDefault();
+  e.stopPropagation();
+  idParaExcluir = id;
+  document.getElementById('modal-nome').textContent = nome;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function fecharModal() {
+  idParaExcluir = null;
+  document.getElementById('modal').style.display = 'none';
+}
+
+document.getElementById('confirmar-exclusao').addEventListener('click', async function () {
+  if (!idParaExcluir) return;
+  var btn = this;
+  btn.disabled = true;
+  btn.textContent = 'Excluindo...';
+
+  var { error } = await window.supabaseClient
+    .from('respostas_questionario')
+    .delete()
+    .eq('id', idParaExcluir);
+
+  btn.disabled = false;
+  btn.textContent = 'Excluir';
+
+  if (error) {
+    alert('Não foi possível excluir a ficha. Tente novamente.');
+    return;
+  }
+
+  clientes = clientes.filter(function (c) { return c.id !== idParaExcluir; });
+  fecharModal();
+  renderizar();
+});
+
+document.getElementById('busca').addEventListener('input', renderizar);
+
+document.getElementById('ordenar-btn').addEventListener('click', function () {
+  ordemRecente = !ordemRecente;
+  this.textContent = ordemRecente ? 'Mais recentes primeiro' : 'Mais antigas primeiro';
+  renderizar();
+});
+
+(async function () {
+  var sessao = await exigirLogin();
+  if (!sessao) return;
+  carregar();
+})();
+</script>
+
+</body>
+</html>
