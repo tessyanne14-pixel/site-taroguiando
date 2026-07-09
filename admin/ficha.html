@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Taroguiando — Ficha</title>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display+SC:wght@400;700&family=Lato:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../supabase-config.js"></script>
+<script src="auth-guard.js"></script>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="topbar no-print">
+  <div class="topbar-title">Taroguiando<small>PAINEL ADMINISTRATIVO</small></div>
+  <button class="btn" onclick="sair()">Sair</button>
+</div>
+
+<div class="container">
+  <div id="conteudo">
+    <div class="loading-state">Carregando ficha...</div>
+  </div>
+</div>
+
+<script>
+function escapeHtml(str) {
+  return (str || '').replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+function formatarData(iso) {
+  var d = new Date(iso);
+  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) +
+    ' às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+function respostaItem(label, valor) {
+  var vazio = !valor || valor === '-';
+  return '<div class="answer-item">' +
+    '<div class="q">' + escapeHtml(label) + '</div>' +
+    '<div class="a' + (vazio ? ' empty' : '') + '">' + (vazio ? 'Não respondido' : escapeHtml(valor)) + '</div>' +
+  '</div>';
+}
+
+function respostaTags(label, valores) {
+  var lista = Array.isArray(valores) ? valores : [];
+  return '<div class="answer-item">' +
+    '<div class="q">' + escapeHtml(label) + '</div>' +
+    (lista.length
+      ? '<div class="tag-list">' + lista.map(function (v) { return '<span class="tag">' + escapeHtml(v) + '</span>'; }).join('') + '</div>'
+      : '<div class="a empty">Nenhum marcado</div>') +
+  '</div>';
+}
+
+function secao(labelParte, titulo, conteudoHtml) {
+  return '<div class="section">' +
+    '<div class="section-label">' + escapeHtml(labelParte) + '</div>' +
+    '<div class="section-title">' + escapeHtml(titulo) + '</div>' +
+    conteudoHtml +
+  '</div>';
+}
+
+function scoreGrid(obj) {
+  obj = obj || {};
+  return '<div class="score-grid">' + Object.keys(obj).map(function (chave) {
+    var valor = obj[chave];
+    var nota = parseInt(valor, 10);
+    var pct = isNaN(nota) ? 0 : (nota / 10) * 100;
+    return '<div class="score-row">' +
+      '<div class="label">' + escapeHtml(chave) + '</div>' +
+      '<div class="score-bar"><span style="width:' + pct + '%"></span></div>' +
+      '<div class="score-value">' + (isNaN(nota) ? '—' : nota) + '</div>' +
+    '</div>';
+  }).join('') + '</div>';
+}
+
+function renderizarFicha(ficha) {
+  var r = ficha.respostas || {};
+  var dados = r.dados_pessoais || {};
+  var objetivos = r.objetivos || {};
+  var areas = r.avaliacao_areas || {};
+  var historico = r.historico || {};
+  var demais = r.demais_respostas || {};
+
+  document.title = 'Ficha — ' + (ficha.nome || 'Cliente');
+
+  var html = '';
+
+  html += '<div class="ficha-header no-print">' +
+    '<div>' +
+      '<a href="index.html" class="btn" style="margin-bottom:14px;">← Voltar</a>' +
+      '<h1>' + escapeHtml(ficha.nome || 'Sem nome') + '</h1>' +
+      '<div class="meta">Enviado em ' + formatarData(ficha.created_at) + '</div>' +
+    '</div>' +
+    '<div class="ficha-actions">' +
+      '<button class="btn btn-primary" onclick="window.print()">🖨 Imprimir / gerar PDF</button>' +
+    '</div>' +
+  '</div>';
+
+  html += secao('Seção 1', 'Dados Pessoais',
+    respostaItem('Nome completo', dados.nome) +
+    respostaItem('Data de nascimento', dados.data_nascimento) +
+    respostaItem('WhatsApp', dados.whatsapp) +
+    respostaItem('E-mail', dados.email) +
+    respostaItem('Cidade / Estado', dados.cidade_estado)
+  );
+
+  html += secao('Seção 2', 'Objetivos',
+    respostaItem('Por que busca ajuda agora', objetivos['Por que busca ajuda agora']) +
+    respostaItem('Vida profissional', objetivos['Objetivo — Vida profissional']) +
+    respostaItem('Vida financeira', objetivos['Objetivo — Vida financeira']) +
+    respostaItem('Saúde e bem-estar', objetivos['Objetivo — Saúde e bem-estar']) +
+    respostaItem('Relacionamentos', objetivos['Objetivo — Relacionamentos']) +
+    respostaItem('Saúde emocional', objetivos['Objetivo — Saúde emocional']) +
+    respostaItem('Espiritualidade', objetivos['Objetivo — Espiritualidade'])
+  );
+
+  html += secao('Seção 3', 'Avaliação das Áreas da Vida', scoreGrid(areas));
+
+  html += secao('Seção 4', 'Histórico',
+    respostaItem('O que já ajudou antes', historico['O que já ajudou antes']) +
+    respostaItem('Pontos fortes', historico['Pontos fortes']) +
+    respostaItem('Habilidades que quer desenvolver', historico['Habilidades que quer desenvolver']) +
+    respostaItem('Faz psicoterapia ou usa medicação', historico['Faz psicoterapia ou usa medicação']) +
+    respostaTags('Hábitos de saúde marcados', historico['Hábitos de saúde marcados']) +
+    respostaTags('Sintomas físicos marcados', historico['Sintomas físicos marcados']) +
+    respostaItem('Outros sintomas', historico['Outros sintomas']) +
+    respostaItem('Mal-estar frequente', historico['Mal-estar frequente']) +
+    respostaItem('Em tratamento médico', historico['Em tratamento médico'])
+  );
+
+  html += secao('Seção 5', 'Demais Respostas',
+    respostaTags('Padrões — Emocional', demais['Padrões — Emocional']) +
+    respostaTags('Padrões — Relacionamentos', demais['Padrões — Relacionamentos']) +
+    respostaTags('Padrões — Espiritualidade', demais['Padrões — Espiritualidade']) +
+    respostaTags('Padrões — Carreira', demais['Padrões — Carreira']) +
+    respostaTags('Padrões — Prosperidade', demais['Padrões — Prosperidade']) +
+    respostaTags('Padrões — Assertividade', demais['Padrões — Assertividade']) +
+    respostaItem('O que mais quer compartilhar', demais['O que mais quer compartilhar'])
+  );
+
+  document.getElementById('conteudo').innerHTML = html;
+}
+
+async function carregar() {
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get('id');
+
+  if (!id) {
+    document.getElementById('conteudo').innerHTML = '<div class="empty-state">Ficha não encontrada.</div>';
+    return;
+  }
+
+  var { data, error } = await window.supabaseClient
+    .from('respostas_questionario')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error || !data) {
+    document.getElementById('conteudo').innerHTML = '<div class="empty-state">Não foi possível carregar esta ficha.</div>';
+    return;
+  }
+
+  renderizarFicha(data);
+}
+
+(async function () {
+  var sessao = await exigirLogin();
+  if (!sessao) return;
+  carregar();
+})();
+</script>
+
+</body>
+</html>

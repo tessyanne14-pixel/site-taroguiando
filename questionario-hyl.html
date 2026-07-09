@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Questionário — Heal Your Life® · Tessy Martins</title>
 <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display+SC:wght@400;700&family=Lato:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/supabase-config.js"></script>
 <style>
 :root {
   --lavender: #9b7fc7;
@@ -439,7 +441,7 @@ button[type="submit"]:active {
 </div>
 
 <div class="container">
-<form action="https://formspree.io/f/mykownze" method="POST">
+<form>
   <input type="hidden" name="_subject" value="🌸 Novo Questionário HYL - Cliente Taroguiando">
   <input type="hidden" name="Origem" value="Questionário HYL / Cliente que já fechou atendimento">
 
@@ -712,90 +714,65 @@ button[type="submit"]:active {
     }
 
     function getChecks(name) {
+      var vals = getChecksArray(name);
+      return vals.length ? vals.join(', ') : '-';
+    }
+
+    function getChecksArray(name) {
       var vals = [];
       f.querySelectorAll('input[type="checkbox"][name="' + CSS.escape(name) + '"]:checked').forEach(function (el) {
         vals.push(el.value);
       });
-      return vals.length ? vals.join(', ') : '-';
+      return vals;
     }
 
     function bloco(titulo, conteudo) {
       if (!conteudo || conteudo === '-') return '';
-      return '
-
-' + titulo + '
-' + '━━━━━━━━━━━━━━━━━━━━
-' + conteudo;
+      return '\n\n' + titulo + '\n' + '━━━━━━━━━━━━━━━━━━━━\n' + conteudo;
     }
 
     var dados =
-      'Nome: ' + getVal('Nome Completo') + '
-' +
-      'Nascimento: ' + getVal('Data de Nascimento') + '
-' +
-      'WhatsApp: ' + getVal('WhatsApp') + '
-' +
-      'E-mail: ' + getVal('Email') + '
-' +
+      'Nome: ' + getVal('Nome Completo') + '\n' +
+      'Nascimento: ' + getVal('Data de Nascimento') + '\n' +
+      'WhatsApp: ' + getVal('WhatsApp') + '\n' +
+      'E-mail: ' + getVal('Email') + '\n' +
       'Cidade/Estado: ' + getVal('Cidade e Estado');
 
     var areas =
-      'Saúde física: ' + getVal('Saúde Física (nota)') + '
-' +
-      'Saúde emocional: ' + getVal('Saúde Emocional (nota)') + '
-' +
-      'Relacionamentos: ' + getVal('Relacionamentos (nota)') + '
-' +
-      'Amizades: ' + getVal('Amizades (nota)') + '
-' +
-      'Saúde espiritual: ' + getVal('Saúde Espiritual (nota)') + '
-' +
-      'Trabalho e carreira: ' + getVal('Trabalho e Carreira (nota)') + '
-' +
-      'Prosperidade financeira: ' + getVal('Prosperidade Financeira (nota)') + '
-' +
-      'Sentido de propósito: ' + getVal('Sentido de Propósito (nota)') + '
-' +
-      'Assertividade: ' + getVal('Assertividade (nota)') + '
-' +
+      'Saúde física: ' + getVal('Saúde Física (nota)') + '\n' +
+      'Saúde emocional: ' + getVal('Saúde Emocional (nota)') + '\n' +
+      'Relacionamentos: ' + getVal('Relacionamentos (nota)') + '\n' +
+      'Amizades: ' + getVal('Amizades (nota)') + '\n' +
+      'Saúde espiritual: ' + getVal('Saúde Espiritual (nota)') + '\n' +
+      'Trabalho e carreira: ' + getVal('Trabalho e Carreira (nota)') + '\n' +
+      'Prosperidade financeira: ' + getVal('Prosperidade Financeira (nota)') + '\n' +
+      'Sentido de propósito: ' + getVal('Sentido de Propósito (nota)') + '\n' +
+      'Assertividade: ' + getVal('Assertividade (nota)') + '\n' +
       'Gestão do tempo: ' + getVal('Gestão do Tempo (nota)');
 
     var objetivos =
-      'Vida profissional: ' + getVal('Objetivo — Vida Profissional') + '
-' +
-      'Vida financeira: ' + getVal('Objetivo — Vida Financeira') + '
-' +
-      'Saúde e bem-estar: ' + getVal('Objetivo — Saúde e Bem-estar') + '
-' +
-      'Relacionamentos: ' + getVal('Objetivo — Relacionamentos') + '
-' +
-      'Saúde emocional: ' + getVal('Objetivo — Saúde Emocional') + '
-' +
+      'Vida profissional: ' + getVal('Objetivo — Vida Profissional') + '\n' +
+      'Vida financeira: ' + getVal('Objetivo — Vida Financeira') + '\n' +
+      'Saúde e bem-estar: ' + getVal('Objetivo — Saúde e Bem-estar') + '\n' +
+      'Relacionamentos: ' + getVal('Objetivo — Relacionamentos') + '\n' +
+      'Saúde emocional: ' + getVal('Objetivo — Saúde Emocional') + '\n' +
       'Espiritualidade: ' + getVal('Objetivo — Espiritualidade');
 
     var recursos =
-      'O que já ajudou antes: ' + getVal('O que já ajudou antes') + '
-' +
-      'Pontos fortes: ' + getVal('Pontos fortes') + '
-' +
+      'O que já ajudou antes: ' + getVal('O que já ajudou antes') + '\n' +
+      'Pontos fortes: ' + getVal('Pontos fortes') + '\n' +
       'Habilidades que quer desenvolver: ' + getVal('Habilidades que quer desenvolver');
 
     var saude =
-      'Faz psicoterapia ou usa medicação: ' + getVal('Faz psicoterapia ou usa medicação') + '
-' +
+      'Faz psicoterapia ou usa medicação: ' + getVal('Faz psicoterapia ou usa medicação') + '\n' +
       'Saúde complementar: ' + getChecks('Saúde — Histórico complementar');
 
     var padroes =
-      'Emocional: ' + getChecks('Emocional - padrao') + '
-' +
-      'Relacionamentos: ' + getChecks('Relacionamentos - padrao') + '
-' +
-      'Espiritualidade: ' + getChecks('Espiritualidade - padrao') + '
-' +
-      'Carreira: ' + getChecks('Carreira - padrao') + '
-' +
-      'Prosperidade: ' + getChecks('Prosperidade - padrao') + '
-' +
+      'Emocional: ' + getChecks('Emocional - padrao') + '\n' +
+      'Relacionamentos: ' + getChecks('Relacionamentos - padrao') + '\n' +
+      'Espiritualidade: ' + getChecks('Espiritualidade - padrao') + '\n' +
+      'Carreira: ' + getChecks('Carreira - padrao') + '\n' +
+      'Prosperidade: ' + getChecks('Prosperidade - padrao') + '\n' +
       'Assertividade: ' + getChecks('Assertividade - padrao');
 
     var sintNomes = [
@@ -817,19 +794,14 @@ button[type="submit"]:active {
     });
 
     var sintomas =
-      'Sintomas marcados: ' + (sintsMarcados.length ? sintsMarcados.join(', ') : 'Nenhum marcado') + '
-' +
-      'Outros sintomas: ' + getVal('Outros sintomas') + '
-' +
-      'Mal-estar frequente: ' + getVal('Sente mal-estar frequente') + '
-' +
+      'Sintomas marcados: ' + (sintsMarcados.length ? sintsMarcados.join(', ') : 'Nenhum marcado') + '\n' +
+      'Outros sintomas: ' + getVal('Outros sintomas') + '\n' +
+      'Mal-estar frequente: ' + getVal('Sente mal-estar frequente') + '\n' +
       'Em tratamento médico: ' + getVal('Em tratamento medico');
 
     var relatorio =
-      '🌸 QUESTIONÁRIO HEAL YOUR LIFE® — TAROGUIANDO
-' +
-      'Cliente que já fechou atendimento / material pré-sessão
-' +
+      '🌸 QUESTIONÁRIO HEAL YOUR LIFE® — TAROGUIANDO\n' +
+      'Cliente que já fechou atendimento / material pré-sessão\n' +
       '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' +
       bloco('👤 DADOS PESSOAIS', dados) +
       bloco('🌟 POR QUE BUSCA AJUDA AGORA', getVal('Por que busca ajuda agora')) +
@@ -840,20 +812,65 @@ button[type="submit"]:active {
       bloco('🔍 PADRÕES EMOCIONAIS E COMPORTAMENTAIS', padroes) +
       bloco('🩺 SINTOMAS FÍSICOS', sintomas) +
       bloco('✨ O QUE MAIS QUER COMPARTILHAR', getVal('O que mais quer compartilhar')) +
-      '
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-' +
+      '\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n' +
       'Enviado via taroguiando.com.br/questionario_hyl.html';
 
-    // ENVIO LIMPO: cria um FormData novo do zero.
-    var data = new FormData();
-    data.append('_subject', '🌸 Novo Questionário HYL - Cliente Taroguiando');
-    data.append('Origem', 'Questionário HYL / Cliente que já fechou atendimento');
-    data.append('Nome completo', getVal('Nome Completo'));
-    data.append('E-mail', getVal('Email'));
-    data.append('WhatsApp', getVal('WhatsApp'));
-    data.append('🌸 RELATÓRIO PREMIUM', relatorio);
+    // Respostas organizadas por seção, para o painel administrativo.
+    var respostas = {
+      dados_pessoais: {
+        nome: getVal('Nome Completo'),
+        data_nascimento: getVal('Data de Nascimento'),
+        whatsapp: getVal('WhatsApp'),
+        email: getVal('Email'),
+        cidade_estado: getVal('Cidade e Estado')
+      },
+      objetivos: {
+        'Por que busca ajuda agora': getVal('Por que busca ajuda agora'),
+        'Objetivo — Vida profissional': getVal('Objetivo — Vida Profissional'),
+        'Objetivo — Vida financeira': getVal('Objetivo — Vida Financeira'),
+        'Objetivo — Saúde e bem-estar': getVal('Objetivo — Saúde e Bem-estar'),
+        'Objetivo — Relacionamentos': getVal('Objetivo — Relacionamentos'),
+        'Objetivo — Saúde emocional': getVal('Objetivo — Saúde Emocional'),
+        'Objetivo — Espiritualidade': getVal('Objetivo — Espiritualidade')
+      },
+      avaliacao_areas: {
+        'Saúde física': getVal('Saúde Física (nota)'),
+        'Saúde emocional': getVal('Saúde Emocional (nota)'),
+        'Relacionamentos': getVal('Relacionamentos (nota)'),
+        'Amizades': getVal('Amizades (nota)'),
+        'Saúde espiritual': getVal('Saúde Espiritual (nota)'),
+        'Trabalho e carreira': getVal('Trabalho e Carreira (nota)'),
+        'Prosperidade financeira': getVal('Prosperidade Financeira (nota)'),
+        'Sentido de propósito': getVal('Sentido de Propósito (nota)'),
+        'Assertividade': getVal('Assertividade (nota)'),
+        'Gestão do tempo': getVal('Gestão do Tempo (nota)')
+      },
+      historico: {
+        'O que já ajudou antes': getVal('O que já ajudou antes'),
+        'Pontos fortes': getVal('Pontos fortes'),
+        'Habilidades que quer desenvolver': getVal('Habilidades que quer desenvolver'),
+        'Faz psicoterapia ou usa medicação': getVal('Faz psicoterapia ou usa medicação'),
+        'Hábitos de saúde marcados': getChecksArray('Saúde — Histórico complementar'),
+        'Sintomas físicos marcados': sintsMarcados,
+        'Outros sintomas': getVal('Outros sintomas'),
+        'Mal-estar frequente': getVal('Sente mal-estar frequente'),
+        'Em tratamento médico': getVal('Em tratamento medico')
+      },
+      demais_respostas: {
+        'Padrões — Emocional': getChecksArray('Emocional - padrao'),
+        'Padrões — Relacionamentos': getChecksArray('Relacionamentos - padrao'),
+        'Padrões — Espiritualidade': getChecksArray('Espiritualidade - padrao'),
+        'Padrões — Carreira': getChecksArray('Carreira - padrao'),
+        'Padrões — Prosperidade': getChecksArray('Prosperidade - padrao'),
+        'Padrões — Assertividade': getChecksArray('Assertividade - padrao'),
+        'O que mais quer compartilhar': getVal('O que mais quer compartilhar')
+      }
+    };
+
+    var dataNascimentoRaw = (function () {
+      var el = f.querySelector('[name="Data de Nascimento"]');
+      return (el && el.value) ? el.value : null;
+    })();
 
     try {
       if (btn) {
@@ -862,13 +879,17 @@ button[type="submit"]:active {
         btn.textContent = 'Enviando...';
       }
 
-      var response = await fetch(f.action, {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
+      var resultado = await window.supabaseClient.from('respostas_questionario').insert({
+        nome: getVal('Nome Completo'),
+        email: getVal('Email') === '-' ? null : getVal('Email'),
+        whatsapp: getVal('WhatsApp') === '-' ? null : getVal('WhatsApp'),
+        data_nascimento: dataNascimentoRaw,
+        cidade_estado: getVal('Cidade e Estado') === '-' ? null : getVal('Cidade e Estado'),
+        relatorio_texto: relatorio,
+        respostas: respostas
       });
 
-      if (response.ok) {
+      if (!resultado.error) {
         f.reset();
         alert('Questionário enviado com sucesso. Obrigada! 💜');
         if (btn) btn.textContent = 'Enviado';

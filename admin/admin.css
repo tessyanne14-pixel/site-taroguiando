@@ -1,0 +1,422 @@
+/* ============================================================
+   Painel Taroguiando — identidade visual compartilhada
+   Mesma paleta e tipografia do questionário público.
+   ============================================================ */
+:root {
+  --lavender: #9b7fc7;
+  --lavender-deep: #6b4fa0;
+  --lavender-soft: #f3eefa;
+  --lavender-border: #cdbfea;
+  --rose: #c2185b;
+  --text: #2e2040;
+  --text-mid: #4a3870;
+  --white: #ffffff;
+  --bg: #faf8fd;
+  --danger: #c2185b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+a { color: inherit; }
+
+/* ---------- Topbar ---------- */
+.topbar {
+  background: linear-gradient(160deg, #f0e6ff 0%, #e4d0f8 100%);
+  border-bottom: 1px solid var(--lavender-border);
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.topbar-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--text);
+}
+
+.topbar-title small {
+  display: block;
+  font-family: 'Playfair Display SC', serif;
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--lavender-deep);
+  margin-top: 2px;
+}
+
+.btn {
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid var(--lavender-border);
+  background: var(--white);
+  color: var(--text-mid);
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover { border-color: var(--lavender); background: var(--lavender-soft); }
+
+.btn-primary {
+  background: var(--lavender-deep);
+  border-color: var(--lavender-deep);
+  color: #fff;
+}
+
+.btn-primary:hover { background: var(--lavender); border-color: var(--lavender); }
+
+.btn-danger { color: var(--danger); border-color: rgba(194,24,91,0.35); }
+.btn-danger:hover { background: rgba(194,24,91,0.08); border-color: var(--danger); }
+
+.btn:disabled { opacity: 0.6; cursor: default; }
+
+/* ---------- Container ---------- */
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* ---------- Login ---------- */
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse 70% 50% at 10% 0%, rgba(220,200,255,0.5) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 70% at 90% 100%, rgba(180,140,230,0.3) 0%, transparent 60%),
+    var(--bg);
+}
+
+.login-card {
+  background: var(--white);
+  border: 1px solid var(--lavender-border);
+  border-radius: 20px;
+  padding: 44px 36px;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 8px 40px rgba(107,79,160,0.15);
+  text-align: center;
+}
+
+.login-card .section-label { justify-content: center; }
+
+.login-card h1 {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 26px;
+  color: var(--text);
+  margin: 8px 0 6px;
+}
+
+.login-card p.sub {
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-bottom: 28px;
+}
+
+.field { margin-bottom: 16px; text-align: left; }
+
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--lavender-border);
+  border-radius: 12px;
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--lavender-soft);
+  outline: none;
+  transition: all 0.2s;
+}
+
+input:focus {
+  border-color: var(--lavender);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(155,127,199,0.15);
+}
+
+.error-msg {
+  color: var(--danger);
+  font-size: 13px;
+  margin-top: 14px;
+  min-height: 18px;
+}
+
+/* ---------- Section label / title (mesmo estilo do questionário) ---------- */
+.section-label {
+  font-family: 'Playfair Display SC', serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--lavender);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 34px;
+  color: var(--lavender-deep);
+  line-height: 1.2;
+}
+
+/* ---------- Toolbar (busca + ordenação) ---------- */
+.toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 28px 0 20px;
+  flex-wrap: wrap;
+}
+
+.search-wrap { flex: 1; min-width: 220px; position: relative; }
+.search-wrap input { padding-left: 40px; }
+.search-wrap::before {
+  content: '🔍';
+  position: absolute;
+  left: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+/* ---------- Lista de clientes ---------- */
+.client-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.client-card {
+  background: var(--white);
+  border: 1px solid var(--lavender-border);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 2px 20px rgba(155,127,199,0.08);
+  transition: all 0.2s;
+  position: relative;
+}
+
+.client-card:hover {
+  border-color: var(--lavender);
+  box-shadow: 0 6px 28px rgba(155,127,199,0.18);
+  transform: translateY(-2px);
+}
+
+.client-card a.card-link {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+}
+
+.client-name {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--text);
+  margin-bottom: 4px;
+  padding-right: 30px;
+}
+
+.client-date {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--lavender-deep);
+  margin-bottom: 14px;
+}
+
+.client-info {
+  font-size: 13.5px;
+  color: var(--text-mid);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.client-info span.label { color: var(--lavender-deep); font-weight: 500; }
+
+.card-actions {
+  position: relative;
+  z-index: 2;
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  color: var(--text-mid);
+  opacity: 0.6;
+  transition: all 0.2s;
+}
+
+.icon-btn:hover { opacity: 1; background: rgba(194,24,91,0.08); color: var(--danger); }
+
+.empty-state, .loading-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-mid);
+  font-style: italic;
+}
+
+/* ---------- Ficha da cliente ---------- */
+.ficha-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.ficha-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 30px;
+  color: var(--text);
+}
+
+.ficha-header .meta {
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-top: 6px;
+}
+
+.ficha-actions { display: flex; gap: 10px; }
+
+.section {
+  background: var(--white);
+  border: 1px solid var(--lavender-border);
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 20px rgba(155,127,199,0.08);
+}
+
+.section .section-title { margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--lavender-border); }
+
+.answer-item { margin-bottom: 16px; }
+.answer-item:last-child { margin-bottom: 0; }
+
+.answer-item .q {
+  font-size: 12.5px;
+  color: var(--lavender-deep);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.answer-item .a {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.answer-item .a.empty { color: var(--text-mid); font-style: italic; opacity: 0.6; }
+
+.tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.tag {
+  background: var(--lavender-soft);
+  border: 1px solid var(--lavender-border);
+  color: var(--text-mid);
+  font-size: 12.5px;
+  padding: 6px 12px;
+  border-radius: 100px;
+}
+
+.score-grid { display: grid; gap: 10px; }
+
+.score-row { display: flex; align-items: center; gap: 14px; }
+
+.score-row .label { flex: 0 0 190px; font-size: 14px; color: var(--text); }
+
+.score-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--lavender-soft);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.score-bar > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--lavender), var(--lavender-deep));
+  border-radius: 100px;
+}
+
+.score-value { flex: 0 0 28px; text-align: right; font-size: 13px; color: var(--lavender-deep); font-weight: 600; }
+
+@media (max-width: 640px) {
+  .score-row { flex-wrap: wrap; }
+  .score-row .label { flex: 1 1 100%; }
+}
+
+/* ---------- Modal de confirmação ---------- */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(46,32,64,0.45);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.modal-box {
+  background: #fff;
+  border-radius: 18px;
+  padding: 28px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 50px rgba(0,0,0,0.2);
+}
+
+.modal-box p { margin: 14px 0 22px; color: var(--text-mid); font-size: 14.5px; }
+.modal-actions { display: flex; gap: 10px; justify-content: center; }
+
+/* ---------- Impressão ---------- */
+@media print {
+  .topbar, .toolbar, .ficha-actions, .card-actions, .no-print { display: none !important; }
+  body { background: #fff; }
+  .container { padding: 0; max-width: 100%; }
+  .section { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+}
