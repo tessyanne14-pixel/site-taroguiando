@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tessy Martins — Design System Oficial</title>
-<meta name="description" content="Sistema de identidade visual oficial da marca Tessy Martins: tokens, tipografia, grid e componentes reutilizáveis para carrosséis, PDFs, WhatsApp, landing pages, site e e-books.">
+<title>Tessy Martins — Brand Book Oficial</title>
+<meta name="description" content="Manual oficial da marca Tessy Martins: essência, posicionamento, tom de voz, direção de arte, logo, tokens de identidade visual e componentes reutilizáveis para carrosséis, PDFs, WhatsApp, landing pages, site e e-books.">
 
 <!--
   Fontes: Google Fonts (necessário conexão com a internet para carregar).
@@ -19,20 +19,33 @@
 <style>
 
 /* ==========================================================================
-   TESSY MARTINS — DESIGN SYSTEM OFICIAL
+   TESSY MARTINS — BRAND BOOK OFICIAL
    ==========================================================================
+   Este arquivo nasceu como Design System técnico e foi expandido para um
+   Brand Book completo: além dos tokens e componentes, documenta a
+   essência, o posicionamento, o tom de voz e a direção de arte da marca —
+   o suficiente para uma agência, um(a) designer, um(a) desenvolvedor(a) ou
+   um(a) fotógrafo(a) produzir material consistente sem precisar perguntar.
+
    Sumário:
      1.  Tokens de marca (cor, tipografia, espaçamento, grid)
      2.  Reset & base
      3.  Grid editorial (.tm-container, .tm-row, .tm-col)
-     4.  Formatos / canvases (Instagram, A4, Desktop, Mobile)
+     4.  Formatos / canvases (Instagram, Stories, A4, Desktop, Mobile)
      5.  Tipografia (título, subtítulo, texto editorial, frase de impacto,
          eyebrow, script)
      6.  Componentes de conteúdo (hero, citação, fotografia, feedback)
      7.  Componentes de conversão (CTA, card de investimento)
      8.  Componentes de estrutura (divisória, benefícios, lista, metodologia,
          rodapé, assinatura)
-     9.  Andaime da documentação (não faz parte do sistema — é só a casca
+     9.  Identidade — Logo (monograma, proteção, tamanho mínimo, versões,
+         fundos permitidos/proibidos)
+     10. Narrativa da marca (sumário, comparativos de tom de voz, exemplos)
+     11. Guia de aplicação por formato (carrossel, stories, site, workshop…)
+     12. Hierarquia visual (regras de composição)
+     13. Experiência & checklist (sensação por ponto de contato, checklist
+         de publicação)
+     14. Andaime da documentação (não faz parte do sistema — é só a casca
          desta própria página de especificação)
    ========================================================================== */
 
@@ -64,6 +77,11 @@
   --tm-line:           rgba(47,43,40,0.14);
   --tm-line-strong:    rgba(47,43,40,0.28);
   --tm-line-gold:      rgba(184,153,103,0.55);
+
+  /* cor de reprodução exclusiva do monograma oficial — nunca usar em texto,
+     fundo ou qualquer outro elemento do sistema. Extraída por amostragem
+     direta do arquivo-fonte do logo (ver capítulo "Logo"). */
+  --tm-logo-plum:      #3A0C3E;
 
   /* --- Tipografia: papéis, não fontes soltas --- */
   /* Serif editorial — títulos, citações, números de destaque */
@@ -208,6 +226,7 @@ ul{ margin: 0; padding: 0; list-style: none; }
 .tm-canvas--a4{ aspect-ratio: 210 / 297; }             /* PDF / e-book */
 .tm-canvas--desktop{ aspect-ratio: 16 / 9; }           /* seção de site / apresentação */
 .tm-canvas--mobile{ aspect-ratio: 9 / 19.5; }          /* site em celular */
+.tm-canvas--stories{ aspect-ratio: 9 / 16; }           /* Stories / Reels */
 
 .tm-canvas .tm-canvas-pad{
   position: absolute; inset: 0;
@@ -608,8 +627,170 @@ figure.tm-photo-feature-wrap figcaption{
 .tm-footer .tm-footer-links a:hover{ color: var(--tm-ink); }
 
 
+/* --------------------------------------------------------------------------
+   9. IDENTIDADE — LOGO
+   O monograma é o único elemento do sistema que não é redesenhado em CSS:
+   é um arquivo fixo. Estas classes existem para documentar como usá-lo —
+   proteção, tamanho mínimo, versões e fundos — não para recriá-lo.
+   -------------------------------------------------------------------------- */
+.tm-logo-mark{ height: 72px; width: auto; }
+
+/* área de proteção — nada (texto, foto, borda de outra peça) pode entrar
+   no espaço tracejado ao redor do monograma */
+.tm-logo-protection{
+  display: inline-block;
+  padding: var(--tm-space-4);
+  outline: 1px dashed var(--tm-line-strong);
+  outline-offset: -1px;
+}
+
+/* grade de tamanho mínimo — compara reproduções lado a lado */
+.tm-logo-scale-row{ display: flex; align-items: flex-end; gap: var(--tm-space-5); flex-wrap: wrap; }
+.tm-logo-scale-row figure{ display: flex; flex-direction: column; align-items: center; gap: var(--tm-space-1); }
+.tm-logo-scale-row figcaption{ font-size: var(--tm-text-caption); color: var(--tm-ink-muted); }
+
+/* versões de cor — pré-visualização por filtro CSS; gerar arquivo próprio
+   em vetor para produção real (ver nota no capítulo) */
+.tm-logo-version-grid{ display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--tm-gutter); }
+.tm-logo-version-tile{
+  aspect-ratio: 1 / 1;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--tm-line);
+  padding: var(--tm-space-3);
+}
+.tm-logo-version-tile img{ width: 46%; height: auto; }
+.tm-logo-version-tile figcaption{ margin-top: var(--tm-space-1); font-size: var(--tm-text-caption); color: var(--tm-ink-muted); text-align: center; }
+.tm-logo-version-tile--reverse{ background: var(--tm-olive); }
+.tm-logo-version-tile--reverse img{ filter: brightness(0) invert(1); }
+.tm-logo-version-tile--ink img{ filter: brightness(0); }
+
+/* fundos permitidos / proibidos */
+.tm-logo-bg-grid{ display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--tm-gutter); }
+.tm-logo-bg-tile{
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--tm-line);
+  padding: var(--tm-space-3);
+}
+.tm-logo-bg-tile img{ width: 44%; height: auto; position: relative; z-index: 1; }
+.tm-logo-bg-tile figcaption{
+  position: absolute; left: 0; right: 0; bottom: -1.6em;
+  font-size: var(--tm-text-caption); color: var(--tm-ink-muted); text-align: center;
+}
+.tm-logo-bg-tile--paper{ background: var(--tm-paper); }
+.tm-logo-bg-tile--bg{ background: var(--tm-bg); }
+.tm-logo-bg-tile--gold{ background: var(--tm-gold-tint); }
+.tm-logo-bg-tile--photo{ background: linear-gradient(200deg,#EDEAE3,#C9C1AE); }
+.tm-logo-bg-tile--lowcontrast{ background: #4A1E52; }
+.tm-logo-bg-tile--noise{ background: repeating-linear-gradient(45deg, #ddd, #ddd 4px, #bbb 4px, #bbb 8px); }
+.tm-logo-bg-tile--busy{ background: linear-gradient(120deg,#e07a5f,#3d405b,#81b29a,#f2cc8f); }
+
+/* exemplos do que nunca fazer com o monograma */
+.tm-logo-dont-grid{ display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: var(--tm-gutter); }
+.tm-logo-dont{
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--tm-line);
+  background: var(--tm-paper);
+  overflow: hidden;
+}
+.tm-logo-dont img{ width: 42%; height: auto; }
+.tm-logo-dont-tag{
+  position: absolute; top: var(--tm-space-1); left: var(--tm-space-1); right: var(--tm-space-1);
+  font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;
+  color: #9B3B36;
+}
+.tm-logo-dont--distort img{ transform: scaleX(2) scaleY(0.55); }
+.tm-logo-dont--shadow img{ filter: drop-shadow(8px 12px 6px rgba(0,0,0,.6)); }
+.tm-logo-dont--gradient{ background: linear-gradient(135deg,#E9C46A,#2A9D8F,#E76F51); }
+.tm-logo-dont--gradient img{ filter: brightness(0) invert(1); }
+.tm-logo-dont--recolor img{ filter: brightness(0) invert(1) sepia(1) saturate(14) hue-rotate(-40deg); }
+
+
+/* --------------------------------------------------------------------------
+   10. NARRATIVA DA MARCA
+   Sumário do brand book e blocos de comparação (tom de voz, público,
+   exemplos certo/errado) — a parte estratégica que orienta toda decisão
+   visual documentada nos capítulos técnicos acima.
+   -------------------------------------------------------------------------- */
+
+/* sumário */
+.tm-toc{ display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0 var(--tm-gutter); }
+.tm-toc a{
+  display: flex; gap: 0.7em; align-items: baseline;
+  padding-block: 0.55em; border-top: 1px solid var(--tm-line);
+  font-size: var(--tm-text-body); color: var(--tm-ink); text-decoration: none;
+}
+.tm-toc a:hover, .tm-toc a:focus-visible{ color: var(--tm-gold); }
+.tm-toc .tm-toc-num{ font-family: var(--tm-font-display); font-style: italic; color: var(--tm-gold); flex: 0 0 1.7em; }
+
+/* comparativo de duas colunas — usamos/evitamos, público/não-público */
+.tm-compare{ display: grid; grid-template-columns: 1fr 1fr; gap: var(--tm-gutter); }
+@media (max-width: 640px){ .tm-compare{ grid-template-columns: 1fr; } }
+.tm-compare-col{ padding-top: var(--tm-space-2); border-top: 2px solid var(--tm-line-strong); }
+.tm-compare-col h4{
+  font-family: var(--tm-font-body); font-weight: 600; font-size: var(--tm-text-caption);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--tm-space-2);
+}
+.tm-compare-col--yes h4{ color: var(--tm-olive); }
+.tm-compare-col--no h4{ color: #9B3B36; }
+.tm-compare-col ul li{ font-size: var(--tm-text-body); line-height: 1.7; color: var(--tm-ink); padding-block: 0.3em; }
+
+/* palavras — chips tipográficos, sem ícone */
+.tm-word-list{ display: flex; flex-wrap: wrap; gap: 0.6em; }
+.tm-word-chip{ font-size: var(--tm-text-caption); padding: 0.45em 0.9em; border: 1px solid var(--tm-line); color: var(--tm-ink); }
+.tm-word-chip--no{ color: var(--tm-ink-muted); text-decoration: line-through; }
+
+/* exemplo certo / errado de copy */
+.tm-example{ padding-left: var(--tm-space-3); border-left: 2px solid; }
+.tm-example--right{ border-color: var(--tm-olive); }
+.tm-example--wrong{ border-color: #9B3B36; }
+.tm-example-tag{ display: block; font-size: var(--tm-text-caption); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5em; }
+.tm-example--right .tm-example-tag{ color: var(--tm-olive); }
+.tm-example--wrong .tm-example-tag{ color: #9B3B36; }
+.tm-example p{ font-family: var(--tm-font-display); font-style: italic; font-size: var(--tm-text-body-lg); line-height: 1.5; color: var(--tm-ink); }
+
+
+/* --------------------------------------------------------------------------
+   11. GUIA DE APLICAÇÃO POR FORMATO
+   Um cartão por tipo de material, indicando canvas, componentes
+   recomendados e o cuidado específico daquele formato.
+   -------------------------------------------------------------------------- */
+.tm-format-guide{ display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--tm-gutter); }
+.tm-format-guide-card{ display: flex; flex-direction: column; gap: 0.6em; padding-top: var(--tm-space-2); border-top: 1px solid var(--tm-line); }
+.tm-format-guide-card h4{ font-family: var(--tm-font-display); font-weight: 400; font-size: var(--tm-text-h3); color: var(--tm-ink); }
+.tm-format-guide-ratio{ font-size: var(--tm-text-caption); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tm-olive); }
+.tm-format-guide-card p{ font-size: var(--tm-text-body); color: var(--tm-ink-muted); line-height: 1.6; }
+.tm-format-guide-caution{ font-size: var(--tm-text-caption); color: var(--tm-ink); }
+.tm-format-guide-caution strong{ color: var(--tm-gold); font-weight: 600; }
+
+
+/* --------------------------------------------------------------------------
+   12. EXPERIÊNCIA & CHECKLIST
+   -------------------------------------------------------------------------- */
+.tm-touchpoints{ display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--tm-gutter); }
+.tm-touchpoint{ padding: var(--tm-space-3); background: var(--tm-paper); border: 1px solid var(--tm-line); display: flex; flex-direction: column; gap: 0.6em; }
+.tm-touchpoint h4{ font-family: var(--tm-font-display); font-style: italic; font-weight: 400; font-size: var(--tm-text-h3); color: var(--tm-ink); }
+.tm-touchpoint p{ font-size: var(--tm-text-body); color: var(--tm-ink-muted); line-height: 1.6; }
+
+.tm-checklist li{
+  padding-block: var(--tm-space-2); border-top: 1px solid var(--tm-line);
+  font-size: var(--tm-text-body); color: var(--tm-ink);
+  display: flex; gap: var(--tm-space-2);
+}
+.tm-checklist li:last-child{ border-bottom: 1px solid var(--tm-line); }
+.tm-checklist li::before{ content: "✓"; color: var(--tm-gold); font-weight: 700; flex-shrink: 0; }
+.tm-checklist-rule{
+  margin-top: var(--tm-space-3);
+  font-family: var(--tm-font-display); font-style: italic;
+  font-size: var(--tm-text-body-lg); color: var(--tm-ink);
+}
+
+
 /* ==========================================================================
-   9. ANDAIME DA DOCUMENTAÇÃO
+   14. ANDAIME DA DOCUMENTAÇÃO
    Tudo abaixo (.tm-doc-*) existe apenas para apresentar este arquivo como
    uma página de especificação legível. NÃO faz parte do design system da
    marca e não deve ser copiado para outras peças.
@@ -693,8 +874,8 @@ figure.tm-photo-feature-wrap figcaption{
      ========================================================================== -->
 <div class="tm-doc-topbar">
   <div class="tm-container">
-    <span class="tm-doc-topbar-title">Tessy Martins · Design System</span>
-    <span class="tm-doc-topbar-meta">v1.0 · uso interno da agência</span>
+    <span class="tm-doc-topbar-title">Tessy Martins · Brand Book</span>
+    <span class="tm-doc-topbar-meta">v2.0 · uso interno da agência</span>
   </div>
 </div>
 
@@ -714,11 +895,205 @@ figure.tm-photo-feature-wrap figcaption{
 
 
   <!-- ======================================================================
-       TOKENS — COR
+       SUMÁRIO
+       ====================================================================== -->
+  <section class="tm-doc-section" id="sumario">
+    <div class="tm-doc-section-head">
+      <h2>Sumário</h2>
+      <p class="tm-doc-section-note">Dezoito capítulos — da essência da marca ao componente de rodapé. Na primeira leitura, siga a ordem.</p>
+    </div>
+    <ul class="tm-toc">
+      <li><a href="#essencia"><span class="tm-toc-num">01</span> Essência da marca</a></li>
+      <li><a href="#posicionamento"><span class="tm-toc-num">02</span> Posicionamento</a></li>
+      <li><a href="#tom-de-voz"><span class="tm-toc-num">03</span> Tom de voz</a></li>
+      <li><a href="#cor"><span class="tm-toc-num">04</span> Identidade visual — cor</a></li>
+      <li><a href="#tipografia"><span class="tm-toc-num">05</span> Identidade visual — tipografia</a></li>
+      <li><a href="#logo"><span class="tm-toc-num">06</span> Identidade visual — logo</a></li>
+      <li><a href="#direcao-de-arte"><span class="tm-toc-num">07</span> Direção de arte</a></li>
+      <li><a href="#editorial"><span class="tm-toc-num">08</span> Componente — texto &amp; frase de impacto</a></li>
+      <li><a href="#citacao"><span class="tm-toc-num">09</span> Componente — citação &amp; feedback</a></li>
+      <li><a href="#fotografia"><span class="tm-toc-num">10</span> Componente — fotografia</a></li>
+      <li><a href="#conversao"><span class="tm-toc-num">11</span> Componente — CTA &amp; investimento</a></li>
+      <li><a href="#estrutura"><span class="tm-toc-num">12</span> Componente — blocos de estrutura</a></li>
+      <li><a href="#fechamento"><span class="tm-toc-num">13</span> Componente — divisória, assinatura &amp; rodapé</a></li>
+      <li><a href="#aplicacao-formatos"><span class="tm-toc-num">14</span> Aplicação por formato</a></li>
+      <li><a href="#hierarquia"><span class="tm-toc-num">15</span> Hierarquia visual</a></li>
+      <li><a href="#formatos"><span class="tm-toc-num">16</span> Formatos (canvases)</a></li>
+      <li><a href="#experiencia"><span class="tm-toc-num">17</span> Experiência</a></li>
+      <li><a href="#checklist"><span class="tm-toc-num">18</span> Checklist</a></li>
+    </ul>
+  </section>
+
+
+  <!-- ======================================================================
+       01 · ESSÊNCIA DA MARCA
+       ====================================================================== -->
+  <section class="tm-doc-section" id="essencia">
+    <div class="tm-doc-section-head">
+      <h2>01 · Essência da marca</h2>
+      <p class="tm-doc-section-note">A base de onde vem toda decisão de tom, imagem e layout deste manual.</p>
+    </div>
+    <div class="tm-row">
+      <div class="tm-col-7">
+        <span class="tm-doc-demo-label">Quem é Tessy Martins</span>
+        <p class="tm-editorial-text">Tessy Martins trabalha na fronteira entre o simbólico e o prático: usa o Tarô como ferramenta terapêutica, apoiada pela Metodologia oficial Heal Your Life®, de Louise Hay, para ajudar mulheres a nomear padrões que se repetem — e a sair deles com clareza, não com fórmula pronta.</p>
+        <p class="tm-editorial-text">A marca existe para devolver seriedade e sofisticação a um universo tratado, com frequência, como espetáculo. Aqui, o Tarô não prevê: ele revela o que já está acontecendo.</p>
+      </div>
+      <div class="tm-col-5">
+        <span class="tm-doc-demo-label">Promessa emocional</span>
+        <p class="tm-statement" style="font-size:var(--tm-text-h3); max-width:22ch;">Devolver a você a clareza que a sua história perdeu pelo caminho.</p>
+      </div>
+    </div>
+
+    <div class="tm-doc-demo tm-row">
+      <div class="tm-col-4">
+        <span class="tm-doc-demo-label">Sensação que transmitimos</span>
+        <ul class="tm-list-elegant">
+          <li>Calma — nunca urgência</li>
+          <li>Confiança — nunca autoridade imposta</li>
+          <li>Sofisticação — nunca ostentação</li>
+        </ul>
+      </div>
+      <div class="tm-col-4">
+        <span class="tm-doc-demo-label">Transformação que vende</span>
+        <ul class="tm-list-elegant">
+          <li>Sair do piloto automático de um padrão repetido</li>
+          <li>Trocar "o que fazer?" por "o que isso revela?"</li>
+          <li>Voltar a se ouvir antes de decidir</li>
+        </ul>
+      </div>
+      <div class="tm-col-4">
+        <span class="tm-doc-demo-label">Emoções que despertamos</span>
+        <ul class="tm-list-elegant">
+          <li>Identificação — "isso é sobre mim"</li>
+          <li>Alívio — "eu não sou a única"</li>
+          <li>Coragem quieta — sem euforia, sem milagre</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       02 · POSICIONAMENTO
+       ====================================================================== -->
+  <section class="tm-doc-section" id="posicionamento">
+    <div class="tm-doc-section-head">
+      <h2>02 · Posicionamento</h2>
+      <p class="tm-doc-section-note">O que diferencia a marca, para quem ela fala — e, com a mesma clareza, para quem ela não fala.</p>
+    </div>
+    <div class="tm-doc-demo">
+      <span class="tm-doc-demo-label">O que diferencia a marca</span>
+      <p class="tm-editorial-text">A combinação de Tarô terapêutico com a Metodologia oficial Heal Your Life® dentro de uma estética editorial — não de linguagem de coach nem de misticismo decorativo. Tessy não compete por quem "acerta mais" uma leitura; compete por quem entrega mais profundidade e mais silêncio por sessão.</p>
+    </div>
+    <div class="tm-doc-demo">
+      <span class="tm-doc-demo-label">Como queremos ser percebidas</span>
+      <p class="tm-editorial-text">Como uma editora de bem-estar, não como uma vidente. Perto de Aesop e Kinfolk — longe de balcão de feira esotérica.</p>
+    </div>
+    <div class="tm-doc-demo tm-compare">
+      <div class="tm-compare-col tm-compare-col--yes">
+        <h4>É o público</h4>
+        <ul>
+          <li>Mulheres em transição — de carreira, relação ou fase de vida</li>
+          <li>Já passaram por terapia ou desenvolvimento pessoal antes</li>
+          <li>Valorizam estética e cuidam de como consomem conteúdo</li>
+          <li>Querem entender a raiz, não só aliviar o sintoma</li>
+        </ul>
+      </div>
+      <div class="tm-compare-col tm-compare-col--no">
+        <h4>Não é o público</h4>
+        <ul>
+          <li>Quem busca previsão de futuro como entretenimento</li>
+          <li>Quem quer resposta rápida do tipo "vai dar tudo certo"</li>
+          <li>Quem procura estética mística caricata (cristal, incenso, neon)</li>
+          <li>Quem busca o "hype" de um coach de motivação</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       03 · TOM DE VOZ
+       ====================================================================== -->
+  <section class="tm-doc-section" id="tom-de-voz">
+    <div class="tm-doc-section-head">
+      <h2>03 · Tom de voz</h2>
+      <p class="tm-doc-section-note">Frases curtas. Silêncio entre elas. Nenhuma palavra a mais do que o necessário.</p>
+    </div>
+
+    <div class="tm-doc-demo tm-compare">
+      <div class="tm-compare-col tm-compare-col--yes">
+        <h4>Como escrevemos</h4>
+        <ul>
+          <li>Frases curtas, com espaço para respirar entre elas</li>
+          <li>Perguntas retóricas usadas com moderação, para gerar identificação</li>
+          <li>Afirmações diretas, sem jargão espiritual</li>
+          <li>Primeira pessoa quando for genuíno, nunca por padrão</li>
+        </ul>
+      </div>
+      <div class="tm-compare-col tm-compare-col--no">
+        <h4>Como não escrevemos</h4>
+        <ul>
+          <li>Caixa alta gritada ou excesso de exclamação</li>
+          <li>Urgência de vendas ("vagas limitadas!", "só hoje!")</li>
+          <li>Jargão de coach genérico ("mindset", "propósito de vida")</li>
+          <li>Promessa de prever o futuro com exatidão</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tm-doc-demo tm-row">
+      <div class="tm-col-6">
+        <span class="tm-doc-demo-label">Palavras que usamos</span>
+        <div class="tm-word-list">
+          <span class="tm-word-chip">volta</span>
+          <span class="tm-word-chip">silêncio</span>
+          <span class="tm-word-chip">clareza</span>
+          <span class="tm-word-chip">presença</span>
+          <span class="tm-word-chip">consistência</span>
+          <span class="tm-word-chip">acolhimento</span>
+          <span class="tm-word-chip">padrão</span>
+          <span class="tm-word-chip">coragem quieta</span>
+          <span class="tm-word-chip">pausa</span>
+        </div>
+      </div>
+      <div class="tm-col-6">
+        <span class="tm-doc-demo-label">Palavras proibidas</span>
+        <div class="tm-word-list">
+          <span class="tm-word-chip tm-word-chip--no">o universo conspira</span>
+          <span class="tm-word-chip tm-word-chip--no">vibração alta</span>
+          <span class="tm-word-chip tm-word-chip--no">manifestar</span>
+          <span class="tm-word-chip tm-word-chip--no">poderosa</span>
+          <span class="tm-word-chip tm-word-chip--no">energia solta, sem contexto</span>
+          <span class="tm-word-chip tm-word-chip--no">corre que as vagas acabam</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tm-doc-demo tm-row">
+      <div class="tm-col-6">
+        <div class="tm-example tm-example--right">
+          <span class="tm-example-tag">Certo</span>
+          <p>E se o problema nunca tivesse sido a sua força?</p>
+        </div>
+      </div>
+      <div class="tm-col-6">
+        <div class="tm-example tm-example--wrong">
+          <span class="tm-example-tag">Errado</span>
+          <p>🔮✨ Descubra seu propósito de vida com o Tarô! Vagas limitadas, corre lá!!! 💜🌙</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       TOKENS — COR  (04 · Identidade visual)
        ====================================================================== -->
   <section class="tm-doc-section" id="cor">
     <div class="tm-doc-section-head">
-      <h2>Cor</h2>
+      <h2>04 · Identidade visual — cor</h2>
       <p class="tm-doc-section-note">Fundo dominante em off-white. Lilás, oliva e dourado são acentos — nunca preenchem uma área grande sozinhos.</p>
     </div>
     <div class="tm-doc-swatches">
@@ -738,7 +1113,7 @@ figure.tm-photo-feature-wrap figcaption{
        ====================================================================== -->
   <section class="tm-doc-section" id="tipografia">
     <div class="tm-doc-section-head">
-      <h2>Tipografia</h2>
+      <h2>05 · Identidade visual — tipografia</h2>
       <p class="tm-doc-section-note">Cormorant Garamond (serif editorial) + Karla (sans humanista) + Allura reservada a uma única palavra por página.</p>
     </div>
 
@@ -753,11 +1128,164 @@ figure.tm-photo-feature-wrap figcaption{
 
 
   <!-- ======================================================================
-       TEXTO EDITORIAL & FRASE DE IMPACTO
+       06 · LOGO
+       ====================================================================== -->
+  <section class="tm-doc-section" id="logo">
+    <div class="tm-doc-section-head">
+      <h2>06 · Logo</h2>
+      <p class="tm-doc-section-note">O monograma é a assinatura da marca — sempre como veio, nunca "ajustado" para combinar com uma peça específica.</p>
+    </div>
+
+    <div class="tm-row">
+      <div class="tm-col-5">
+        <span class="tm-doc-demo-label">Monograma oficial</span>
+        <div class="tm-logo-protection">
+          <img class="tm-logo-mark" src="assets/brand/monograma-t.png" alt="Monograma oficial de Tessy Martins — letra T em script com um brilho de quatro pontas">
+        </div>
+        <p class="tm-doc-section-note" style="max-width:none; margin-top:var(--tm-space-2);">A área tracejada é a proteção mínima: nada — texto, foto, borda de outro elemento — pode entrar nesse espaço.</p>
+      </div>
+      <div class="tm-col-7">
+        <span class="tm-doc-demo-label">Cor de reprodução</span>
+        <p class="tm-editorial-text">O monograma é reproduzido em um único tom — um plum profundo, mais escuro que o lilás de apoio do sistema. É proposital: o logo é a assinatura, não um bloco de cor do layout, e por isso carrega seu próprio tom fixo, nunca substituído pelas cores de apoio da página.</p>
+        <div class="tm-doc-type-row" style="margin-top:var(--tm-space-2);">
+          <span class="tm-doc-type-tag">--tm-logo-plum</span>
+          <span style="display:inline-flex; align-items:center; gap:.6em;">
+            <span style="display:inline-block;width:28px;height:28px;background:var(--tm-logo-plum);border:1px solid var(--tm-line);"></span>
+            #3A0C3E
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tm-doc-demo">
+      <span class="tm-doc-demo-label">Tamanho mínimo</span>
+      <div class="tm-logo-scale-row">
+        <figure><img class="tm-logo-mark" style="height:96px" src="assets/brand/monograma-t.png" alt=""><figcaption>Padrão — capa, hero, assinatura de e-book</figcaption></figure>
+        <figure><img class="tm-logo-mark" style="height:44px" src="assets/brand/monograma-t.png" alt=""><figcaption>Mínimo em tela — 32px de altura</figcaption></figure>
+        <figure><img class="tm-logo-mark" style="height:44px" src="assets/brand/monograma-t.png" alt=""><figcaption>Mínimo em impresso — 10mm de altura</figcaption></figure>
+      </div>
+      <p class="tm-doc-section-note" style="max-width:none; margin-top:var(--tm-space-2);">Abaixo desses limites o brilho de quatro pontas perde nitidez — nesse caso, use o nome completo em tipografia (assinatura) em vez do monograma.</p>
+    </div>
+
+    <div class="tm-doc-demo">
+      <span class="tm-doc-demo-label">Versões (pré-visualização)</span>
+      <div class="tm-logo-version-grid">
+        <div class="tm-logo-version-tile">
+          <img src="assets/brand/monograma-t.png" alt="">
+          <figcaption>Original — plum sobre transparente</figcaption>
+        </div>
+        <div class="tm-logo-version-tile tm-logo-version-tile--ink">
+          <img src="assets/brand/monograma-t.png" alt="">
+          <figcaption>Tinta — impressão em 1 cor</figcaption>
+        </div>
+        <div class="tm-logo-version-tile tm-logo-version-tile--reverse">
+          <img src="assets/brand/monograma-t.png" alt="">
+          <figcaption>Reversa — fundos escuros</figcaption>
+        </div>
+      </div>
+      <p class="tm-doc-section-note" style="max-width:none; margin-top:var(--tm-space-2);">As duas últimas são pré-visualizações por filtro, só para referência. Para produção, peça ao designer os arquivos vetoriais definitivos nessas versões — não gere-as por filtro em uma peça final.</p>
+    </div>
+
+    <div class="tm-doc-demo">
+      <span class="tm-doc-demo-label">Fundos permitidos</span>
+      <div class="tm-logo-bg-grid">
+        <div class="tm-logo-bg-tile tm-logo-bg-tile--paper"><img src="assets/brand/monograma-t.png" alt=""><figcaption>Papel</figcaption></div>
+        <div class="tm-logo-bg-tile tm-logo-bg-tile--bg"><img src="assets/brand/monograma-t.png" alt=""><figcaption>Fundo</figcaption></div>
+        <div class="tm-logo-bg-tile tm-logo-bg-tile--gold"><img src="assets/brand/monograma-t.png" alt=""><figcaption>Tinta de dourado</figcaption></div>
+        <div class="tm-logo-bg-tile tm-logo-bg-tile--photo"><img src="assets/brand/monograma-t.png" alt=""><figcaption>Foto clara, com contraste</figcaption></div>
+      </div>
+    </div>
+
+    <div class="tm-doc-demo">
+      <span class="tm-doc-demo-label">Fundos proibidos</span>
+      <div class="tm-logo-bg-grid">
+        <div class="tm-logo-bg-tile tm-logo-bg-tile--lowcontrast"><img src="assets/brand/monograma-t.png" alt=""><figcaption>Baixo contraste</figcaption></div>
+        <div class="tm-logo-bg-tile tm-logo-bg-tile--noise"><img src="assets/brand/monograma-t.png" alt=""><figcaption>Padrão / textura</figcaption></div>
+        <div class="tm-logo-bg-tile tm-logo-bg-tile--busy"><img src="assets/brand/monograma-t.png" alt=""><figcaption>Foto ruidosa / multicor</figcaption></div>
+      </div>
+    </div>
+
+    <div class="tm-doc-demo">
+      <span class="tm-doc-demo-label">Nunca fazer</span>
+      <div class="tm-logo-dont-grid">
+        <div class="tm-logo-dont tm-logo-dont--distort"><span class="tm-logo-dont-tag">Não distorcer</span><img src="assets/brand/monograma-t.png" alt=""></div>
+        <div class="tm-logo-dont tm-logo-dont--shadow"><span class="tm-logo-dont-tag">Não aplicar sombra</span><img src="assets/brand/monograma-t.png" alt=""></div>
+        <div class="tm-logo-dont tm-logo-dont--gradient"><span class="tm-logo-dont-tag" style="color:#fff">Não usar degradê</span><img src="assets/brand/monograma-t.png" alt=""></div>
+        <div class="tm-logo-dont tm-logo-dont--recolor"><span class="tm-logo-dont-tag">Não mudar a cor</span><img src="assets/brand/monograma-t.png" alt=""></div>
+      </div>
+    </div>
+
+    <div class="tm-doc-demo">
+      <span class="tm-doc-demo-label">Selo de certificação — Heal Your Life®</span>
+      <div class="tm-row">
+        <div class="tm-col-6">
+          <div style="background:var(--tm-paper); border:1px solid var(--tm-line); padding:var(--tm-space-3); display:flex; align-items:center;">
+            <img src="assets/brand/selo-heal-your-life.jpg" alt="Selo oficial do programa Heal Your Life®" style="max-width:220px;">
+          </div>
+        </div>
+        <div class="tm-col-6">
+          <p class="tm-editorial-text">Este selo pertence ao programa oficial Heal Your Life® (Louise Hay / Hay House) — não é um ativo da marca Tessy Martins e não deve ser tratado como logo principal de nenhuma peça.</p>
+          <ul class="tm-list-elegant" style="margin-top:var(--tm-space-2);">
+            <li>Nunca recolorir, distorcer ou combinar visualmente com o monograma</li>
+            <li>Usar apenas como selo de credencial, próximo a um texto ("Coach certificada Heal Your Life®")</li>
+            <li>Reproduzir no tamanho e formato fornecidos pelo licenciante</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       07 · DIREÇÃO DE ARTE
+       ====================================================================== -->
+  <section class="tm-doc-section" id="direcao-de-arte">
+    <div class="tm-doc-section-head">
+      <h2>07 · Direção de arte</h2>
+      <p class="tm-doc-section-note">Guia para quem fotografa ou trata imagem para a marca — antes de olhar para o componente <code>.tm-photo-*</code> logo abaixo.</p>
+    </div>
+    <div class="tm-row">
+      <div class="tm-col-6">
+        <span class="tm-doc-demo-label">Fotografia &amp; composição</span>
+        <ul class="tm-list-elegant">
+          <li>Lifestyle editorial — mulher em momento contemplativo, nunca posada para a câmera</li>
+          <li>Nunca olhando para a lente; nunca sorriso exagerado</li>
+          <li>Planos abertos, com respiro ao redor do corpo — evitar close agressivo de rosto</li>
+          <li>Preferir perfil, mãos, costas, detalhes, a rosto de frente</li>
+          <li>Regra dos terços, nunca centralizar o assunto por padrão</li>
+        </ul>
+      </div>
+      <div class="tm-col-6">
+        <span class="tm-doc-demo-label">Luz, tratamento &amp; textura</span>
+        <ul class="tm-list-elegant">
+          <li>Sempre luz natural — janela, hora dourada; nunca flash direto ou estúdio duro</li>
+          <li>Contraste baixo-médio, cor sóbria; nunca preset saturado ou HDR</li>
+          <li>Grain discreto é bem-vindo; filtro vibrante não</li>
+          <li>Texturas: linho, papel, madeira clara, vidro, flor seca</li>
+          <li>Evitar: tecido brilhante, plástico, neon, glitter</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tm-doc-demo">
+      <span class="tm-doc-demo-label">Referências (nível, não cópia)</span>
+      <div class="tm-word-list">
+        <span class="tm-word-chip">Kinfolk Magazine</span>
+        <span class="tm-word-chip">Aesop</span>
+        <span class="tm-word-chip">Cereal Magazine</span>
+        <span class="tm-word-chip">Vogue Living</span>
+        <span class="tm-word-chip">Apple</span>
+      </div>
+      <p class="tm-doc-section-note" style="max-width:none; margin-top:var(--tm-space-2);">Usar como termômetro de sofisticação, nunca como fonte para copiar composição, still ou paleta ao pé da letra.</p>
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       TEXTO EDITORIAL & FRASE DE IMPACTO  (08)
        ====================================================================== -->
   <section class="tm-doc-section" id="editorial">
     <div class="tm-doc-section-head">
-      <h2>Texto editorial &amp; frase de impacto</h2>
+      <h2>08 · Texto editorial &amp; frase de impacto</h2>
       <p class="tm-doc-section-note">Parágrafo corrido com largura de leitura controlada; frase de impacto isolada, com muito ar ao redor.</p>
     </div>
 
@@ -780,7 +1308,7 @@ figure.tm-photo-feature-wrap figcaption{
        ====================================================================== -->
   <section class="tm-doc-section" id="citacao">
     <div class="tm-doc-section-head">
-      <h2>Citação &amp; feedback</h2>
+      <h2>09 · Citação &amp; feedback</h2>
       <p class="tm-doc-section-note">Citação: fala atribuída, filete dourado à esquerda. Feedback: depoimento tratado como texto, nunca como selo de prova social.</p>
     </div>
     <div class="tm-row">
@@ -801,7 +1329,7 @@ figure.tm-photo-feature-wrap figcaption{
        ====================================================================== -->
   <section class="tm-doc-section" id="fotografia">
     <div class="tm-doc-section-head">
-      <h2>Fotografia</h2>
+      <h2>10 · Fotografia</h2>
       <p class="tm-doc-section-note">Sempre lifestyle, luz natural, mulher em momento contemplativo — nunca olhando para a câmera. As áreas tonais abaixo substituem a fotografia real apenas nesta especificação.</p>
     </div>
     <div class="tm-row">
@@ -828,7 +1356,7 @@ figure.tm-photo-feature-wrap figcaption{
        ====================================================================== -->
   <section class="tm-doc-section" id="conversao">
     <div class="tm-doc-section-head">
-      <h2>CTA &amp; investimento</h2>
+      <h2>11 · CTA &amp; investimento</h2>
       <p class="tm-doc-section-note">O CTA é um link sublinhado, nunca um botão preenchido e arredondado. O card de investimento apresenta a oferta com contenção.</p>
     </div>
     <div class="tm-row">
@@ -855,7 +1383,7 @@ figure.tm-photo-feature-wrap figcaption{
        ====================================================================== -->
   <section class="tm-doc-section" id="estrutura">
     <div class="tm-doc-section-head">
-      <h2>Blocos de estrutura</h2>
+      <h2>12 · Blocos de estrutura</h2>
       <p class="tm-doc-section-note">Benefícios, depoimento em card, lista elegante e bloco de metodologia — todos sem ícones, apenas tipografia e fio.</p>
     </div>
 
@@ -932,7 +1460,7 @@ figure.tm-photo-feature-wrap figcaption{
        ====================================================================== -->
   <section class="tm-doc-section" id="fechamento">
     <div class="tm-doc-section-head">
-      <h2>Divisória, assinatura &amp; rodapé</h2>
+      <h2>13 · Divisória, assinatura &amp; rodapé</h2>
       <p class="tm-doc-section-note">Como qualquer peça se fecha: um fio, uma assinatura, um rodapé — nunca os três competindo por atenção ao mesmo tempo.</p>
     </div>
 
@@ -963,11 +1491,127 @@ figure.tm-photo-feature-wrap figcaption{
 
 
   <!-- ======================================================================
-       FORMATOS — mesma identidade em quatro proporções
+       14 · APLICAÇÃO POR FORMATO
+       ====================================================================== -->
+  <section class="tm-doc-section" id="aplicacao-formatos">
+    <div class="tm-doc-section-head">
+      <h2>14 · Aplicação por formato</h2>
+      <p class="tm-doc-section-note">Os mesmos componentes acima, orientados por tipo de material. Nenhum formato ganha um componente novo — só uma combinação diferente dos já existentes.</p>
+    </div>
+    <div class="tm-format-guide">
+
+      <div class="tm-format-guide-card">
+        <h4>Carrossel</h4>
+        <span class="tm-format-guide-ratio">.tm-canvas--instagram · 1080×1350</span>
+        <p>Slide 1 usa <code>.tm-hero</code> ou <code>.tm-statement</code>. Slides intermediários: <code>.tm-editorial-text</code>, <code>.tm-quote</code> ou <code>.tm-photo-framed</code>. Último slide: <code>.tm-cta</code> + <code>.tm-signature</code>.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> um bloco de texto por slide — nunca dois competindo.</p>
+      </div>
+
+      <div class="tm-format-guide-card">
+        <h4>Stories</h4>
+        <span class="tm-format-guide-ratio">.tm-canvas--stories · 9×16</span>
+        <p>Vertical, mais vazio ainda que o carrossel — texto concentrado no terço central para não colidir com a interface do aplicativo no topo/rodapé.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> nunca aplicar o monograma menor que o mínimo de tela (32px).</p>
+      </div>
+
+      <div class="tm-format-guide-card">
+        <h4>Threads / posts de texto</h4>
+        <span class="tm-format-guide-ratio">.tm-canvas--instagram-square · 1×1</span>
+        <p>Composição só tipográfica: <code>.tm-statement</code> ou <code>.tm-quote</code> centralizados, sem fotografia — o formato já é conversa, não precisa de imagem.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> sem script aqui — o app renderiza a legenda em fonte própria; o script fica só na peça de imagem.</p>
+      </div>
+
+      <div class="tm-format-guide-card">
+        <h4>Site</h4>
+        <span class="tm-format-guide-ratio">.tm-canvas--desktop / --mobile</span>
+        <p>Seções longas combinam <code>.tm-hero</code>, <code>.tm-editorial-text</code>, <code>.tm-benefits</code>, <code>.tm-methodology</code> e <code>.tm-footer</code> — a ordem deste próprio documento é o roteiro.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> grid de 12 colunas sempre; nunca texto full-width acima de 62ch.</p>
+      </div>
+
+      <div class="tm-format-guide-card">
+        <h4>Landing page</h4>
+        <span class="tm-format-guide-ratio">.tm-canvas--desktop / --mobile</span>
+        <p><code>.tm-hero</code> → <code>.tm-quote</code> ou <code>.tm-feedback</code> → <code>.tm-benefits</code> → <code>.tm-card-investment</code> → <code>.tm-card-testimonial</code> → <code>.tm-footer</code>.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> um único <code>.tm-cta</code> de destaque por página — não repetir o botão em cada seção.</p>
+      </div>
+
+      <div class="tm-format-guide-card">
+        <h4>Workshop</h4>
+        <span class="tm-format-guide-ratio">.tm-canvas--desktop (slides) / --a4 (apostila)</span>
+        <p><code>.tm-methodology</code> para o roteiro do encontro; <code>.tm-benefits</code> para "o que você leva"; <code>.tm-signature</code> ao final de cada módulo.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> slide de apresentação nunca leva mais que uma frase de impacto por tela.</p>
+      </div>
+
+      <div class="tm-format-guide-card">
+        <h4>Tarô</h4>
+        <span class="tm-format-guide-ratio">.tm-canvas--instagram / --instagram-square</span>
+        <p><code>.tm-photo-framed</code> para a carta em destaque; <code>.tm-quote</code> para a leitura; nunca ilustração de baralho genérica — sempre fotografia editorial da própria Tessy com as cartas.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> nenhuma linguagem de previsão ("isso vai acontecer") — sempre de revelação ("isso mostra").</p>
+      </div>
+
+      <div class="tm-format-guide-card">
+        <h4>Heal Your Life®</h4>
+        <span class="tm-format-guide-ratio">.tm-canvas--instagram / --a4</span>
+        <p><code>.tm-methodology</code> e <code>.tm-quote</code> (com citação de Louise Hay, sempre atribuída). O selo oficial acompanha como credencial — nunca como elemento decorativo.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> ver regras do selo no capítulo 06 · Logo.</p>
+      </div>
+
+      <div class="tm-format-guide-card">
+        <h4>WhatsApp</h4>
+        <span class="tm-format-guide-ratio">.tm-canvas--instagram-square · 1×1</span>
+        <p>Card único para status ou catálogo: <code>.tm-statement</code> curto + <code>.tm-signature</code>. Texto de conversa (fora da imagem) segue o tom de voz do capítulo 03, nunca um script de vendas.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> sem emoji de brilho/cristal, mesmo em conversa informal.</p>
+      </div>
+
+      <div class="tm-format-guide-card">
+        <h4>PDF</h4>
+        <span class="tm-format-guide-ratio">.tm-canvas--a4</span>
+        <p>Capa = <code>.tm-hero</code> em página cheia. Miolo = <code>.tm-editorial-text</code> em coluna única, <code>.tm-divider</code> entre capítulos. Última página = <code>.tm-footer</code> + <code>.tm-signature</code>.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> margem de impressão nunca menor que <code>--tm-margin</code> no menor breakpoint.</p>
+      </div>
+
+      <div class="tm-format-guide-card">
+        <h4>E-book</h4>
+        <span class="tm-format-guide-ratio">.tm-canvas--a4</span>
+        <p>Mesma estrutura do PDF, com <code>.tm-photo-feature</code> abrindo cada capítulo e <code>.tm-quote</code> fechando — o e-book é a peça mais longa, por isso a mais generosa em espaço.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> nunca mais de uma fonte script por capítulo, mesmo em 50+ páginas.</p>
+      </div>
+
+      <div class="tm-format-guide-card">
+        <h4>Newsletter</h4>
+        <span class="tm-format-guide-ratio">largura de e-mail — 600px</span>
+        <p><code>.tm-eyebrow</code> + <code>.tm-title--sm</code> no topo, um <code>.tm-editorial-text</code>, um único <code>.tm-cta</code>, <code>.tm-footer</code> simplificado ao final.</p>
+        <p class="tm-format-guide-caution"><strong>Atenção:</strong> clientes de e-mail nem sempre carregam Google Fonts — declarar sempre um fallback serif/sans do sistema.</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       15 · HIERARQUIA VISUAL
+       ====================================================================== -->
+  <section class="tm-doc-section" id="hierarquia">
+    <div class="tm-doc-section-head">
+      <h2>15 · Hierarquia visual</h2>
+      <p class="tm-doc-section-note">Cinco regras de composição — se uma peça quebra alguma delas, ela provavelmente não deveria ir ao ar assim.</p>
+    </div>
+    <ul class="tm-list-elegant">
+      <li><span><strong>Texto:</strong> no máximo dois blocos por peça — um título/frase e um apoio. Nunca três tamanhos de texto competindo pela mesma atenção.</span></li>
+      <li><span><strong>Espaço:</strong> pelo menos 40% da peça é vazio. A margem nunca é menor que <code>--tm-margin</code> do formato.</span></li>
+      <li><span><strong>Foto inteira vs. foto pequena:</strong> full-bleed (<code>.tm-photo-feature</code>) quando a peça abre uma sequência — hero, capa, slide 1. Emoldurada ou pequena (<code>.tm-photo-framed</code>) quando a peça apoia uma prova — depoimento, meio de carrossel, card de investimento.</span></li>
+      <li><span><strong>Cor de acento:</strong> no máximo um acento — lilás <em>ou</em> oliva <em>ou</em> dourado — por peça. Nunca os três juntos.</span></li>
+      <li><span><strong>Script:</strong> uma palavra em <code>.tm-script</code> por peça. Nunca mais.</span></li>
+    </ul>
+  </section>
+
+
+  <!-- ======================================================================
+       FORMATOS — mesma identidade em cinco proporções  (16)
        ====================================================================== -->
   <section class="tm-doc-section" id="formatos">
     <div class="tm-doc-section-head">
-      <h2>Formatos</h2>
+      <h2>16 · Formatos</h2>
       <p class="tm-doc-section-note">O mesmo <code>.tm-hero</code>, no mesmo grid, escalado por container query — sem alterar a identidade entre Instagram, PDF (A4), desktop e mobile.</p>
     </div>
     <div class="tm-doc-formats">
@@ -1013,7 +1657,77 @@ figure.tm-photo-feature-wrap figcaption{
         <figcaption>Site — mobile (9:19.5)</figcaption>
       </figure>
 
+      <figure class="tm-doc-format-card">
+        <div class="tm-canvas tm-canvas--stories tm-doc-mini-canvas" style="max-width:220px; margin-inline:auto;">
+          <div class="tm-canvas-pad" style="justify-content:center; background:var(--tm-bg);">
+            <span class="tm-eyebrow" style="font-size:3.6cqw;">Tessy Martins</span>
+            <span class="tm-title" style="font-size:11cqw; margin-block:.3em;"><span class="tm-script" style="font-size:1.1em">Volta</span> para Si</span>
+          </div>
+        </div>
+        <figcaption>Stories / Reels (9:16)</figcaption>
+      </figure>
+
     </div>
+  </section>
+
+
+  <!-- ======================================================================
+       17 · EXPERIÊNCIA
+       ====================================================================== -->
+  <section class="tm-doc-section" id="experiencia">
+    <div class="tm-doc-section-head">
+      <h2>17 · Experiência</h2>
+      <p class="tm-doc-section-note">O design system garante consistência visual. Isto aqui garante que a consistência seja sentida, não só vista.</p>
+    </div>
+    <div class="tm-touchpoints">
+      <div class="tm-touchpoint">
+        <h4>Instagram</h4>
+        <p>Parar de rolar por um segundo e sentir que alguém está falando diretamente com ela, sem gritar.</p>
+      </div>
+      <div class="tm-touchpoint">
+        <h4>Site</h4>
+        <p>Sentir que entrou em um espaço cuidado — não em uma landing page de vendas.</p>
+      </div>
+      <div class="tm-touchpoint">
+        <h4>PDF / e-book</h4>
+        <p>Sentir que recebeu um presente, não um material genérico de captura de contato.</p>
+      </div>
+      <div class="tm-touchpoint">
+        <h4>Workshop</h4>
+        <p>Sentir-se acolhida desde a primeira mensagem de confirmação até a última mensagem de despedida.</p>
+      </div>
+      <div class="tm-touchpoint">
+        <h4>WhatsApp</h4>
+        <p>Sentir que está falando com uma pessoa real, com resposta cuidadosa — não com um robô de vendas.</p>
+      </div>
+      <div class="tm-touchpoint">
+        <h4>Consulta</h4>
+        <p>Sair da sessão com clareza — não com mais perguntas do que entrou.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       18 · CHECKLIST
+       ====================================================================== -->
+  <section class="tm-doc-section" id="checklist">
+    <div class="tm-doc-section-head">
+      <h2>18 · Checklist</h2>
+      <p class="tm-doc-section-note">Antes de publicar qualquer material, ele precisa responder sim a todas as perguntas abaixo.</p>
+    </div>
+    <ul class="tm-checklist">
+      <li>Parece revista?</li>
+      <li>Parece elegante?</li>
+      <li>Parece Tessy Martins?</li>
+      <li>Parece premium?</li>
+      <li>Tem muito espaço em branco?</li>
+      <li>Há apenas uma palavra em script?</li>
+      <li>O texto está simples?</li>
+      <li>Existe emoção?</li>
+      <li>Existe silêncio?</li>
+    </ul>
+    <p class="tm-checklist-rule">Se alguma resposta for não, o material precisa ser revisado.</p>
   </section>
 
 </main>
