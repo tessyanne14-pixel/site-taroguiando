@@ -491,6 +491,19 @@ figure.tm-photo-feature-wrap figcaption{
 }
 .tm-section--narrow{ max-width: 560px; }
 
+/* --- Ponte de convergência: o convite discreto pra Jornada Volta para Si
+   que fecha o Tarô, Conheça a Tessy e cada Artigo. Vem depois do conteúdo
+   principal da página, nunca compete com o CTA dela — por isso não é o
+   mesmo visual de .tm-cta sozinho, é uma caixa que sinaliza "isso é outra
+   porta, não a saída". --- */
+.tm-bridge{
+  background: var(--tm-gold-tint);
+  border: 1px solid var(--tm-line-gold);
+  padding: var(--tm-space-4);
+  border-radius: var(--tm-radius);
+}
+.tm-bridge .tm-cta{ margin-top: var(--tm-space-2); color: var(--tm-gold); }
+
 /* --- Bloco de benefícios: lista curta, numerais romanos, sem ícones --- */
 .tm-benefits{
   display: flex;
