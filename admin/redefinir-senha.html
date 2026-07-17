@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Taroguiando — Redefinir senha</title>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display+SC:wght@400;700&family=Lato:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/supabase-config.js"></script>
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="section-label">TAROGUIANDO</div>
+    <h1>Redefinir senha</h1>
+    <p class="sub">Escolha uma nova senha para o painel.</p>
+
+    <form id="reset-form" autocomplete="off">
+      <div class="field">
+        <label for="nova-senha">Nova senha</label>
+        <input type="password" id="nova-senha" required minlength="6" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+      </div>
+      <div class="field">
+        <label for="confirmar-senha">Confirmar nova senha</label>
+        <input type="password" id="confirmar-senha" required minlength="6" placeholder="Repita a senha" autocomplete="new-password">
+      </div>
+      <button type="submit" class="btn btn-primary" id="reset-btn" style="width:100%; justify-content:center;">Salvar nova senha</button>
+      <div class="error-msg" id="reset-msg"></div>
+    </form>
+
+    <p style="text-align:center; margin-top:18px;">
+      <a href="/admin/login.html" style="font-size:13px; color:var(--text-mid); text-decoration:underline;">Voltar para o login</a>
+    </p>
+  </div>
+</div>
+
+<script>
+(async function () {
+  var form = document.getElementById('reset-form');
+  var btn = document.getElementById('reset-btn');
+  var msg = document.getElementById('reset-msg');
+
+  // O link do e-mail já traz um token que o Supabase usa para abrir uma
+  // sessão temporária de recuperação — é isso que permite trocar a senha.
+  var { data } = await window.supabaseClient.auth.getSession();
+  if (!data || !data.session) {
+    msg.textContent = 'Este link expirou ou é inválido. Volte ao login e clique em "Esqueci minha senha" para gerar um novo.';
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    msg.style.color = '';
+
+    var senha = document.getElementById('nova-senha').value;
+    var confirmar = document.getElementById('confirmar-senha').value;
+
+    if (senha !== confirmar) {
+      msg.textContent = 'As senhas digitadas não coincidem.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+
+    var { error } = await window.supabaseClient.auth.updateUser({ password: senha });
+
+    btn.disabled = false;
+    btn.textContent = 'Salvar nova senha';
+
+    if (error) {
+      msg.style.color = 'var(--danger)';
+      msg.textContent = 'Não foi possível salvar. Solicite um novo link e tente de novo.';
+      return;
+    }
+
+    msg.style.color = 'var(--lavender-deep)';
+    msg.textContent = 'Senha alterada com sucesso! Levando você para o painel...';
+    setTimeout(function () { window.location.href = '/admin/index.html'; }, 1500);
+  });
+})();
+</script>
+
+</body>
+</html>

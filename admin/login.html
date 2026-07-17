@@ -30,6 +30,19 @@
       <button type="submit" class="btn btn-primary" id="login-btn" style="width:100%; justify-content:center;">Entrar</button>
       <div class="error-msg" id="error-msg"></div>
     </form>
+
+    <p style="text-align:center; margin-top:18px;">
+      <a href="#" id="esqueci-link" style="font-size:13px; color:var(--text-mid); text-decoration:underline;">Esqueci minha senha</a>
+    </p>
+
+    <div id="forgot-wrap" style="display:none; text-align:left; margin-top:12px;">
+      <div class="field">
+        <label for="forgot-email">Confirme seu e-mail para receber o link</label>
+        <input type="email" id="forgot-email" placeholder="seu@email.com">
+      </div>
+      <button type="button" class="btn" id="forgot-send-btn" style="width:100%; justify-content:center;">Enviar link de recuperação</button>
+      <div class="error-msg" id="forgot-msg"></div>
+    </div>
   </div>
 </div>
 
@@ -69,6 +82,47 @@
     }
 
     window.location.href = '/admin/index.html';
+  });
+
+  var esqueciLink = document.getElementById('esqueci-link');
+  var forgotWrap = document.getElementById('forgot-wrap');
+  var forgotEmail = document.getElementById('forgot-email');
+  var forgotBtn = document.getElementById('forgot-send-btn');
+  var forgotMsg = document.getElementById('forgot-msg');
+
+  esqueciLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    var abrir = forgotWrap.style.display === 'none';
+    forgotWrap.style.display = abrir ? 'block' : 'none';
+    if (abrir) forgotEmail.value = document.getElementById('email').value;
+  });
+
+  forgotBtn.addEventListener('click', async function () {
+    var email = forgotEmail.value.trim();
+    forgotMsg.style.color = '';
+    if (!email) {
+      forgotMsg.textContent = 'Digite seu e-mail.';
+      return;
+    }
+
+    forgotBtn.disabled = true;
+    forgotBtn.textContent = 'Enviando...';
+
+    var { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/admin/redefinir-senha.html'
+    });
+
+    forgotBtn.disabled = false;
+    forgotBtn.textContent = 'Enviar link de recuperação';
+
+    if (error) {
+      forgotMsg.style.color = 'var(--danger)';
+      forgotMsg.textContent = 'Não consegui enviar agora. Tente novamente em instantes.';
+      return;
+    }
+
+    forgotMsg.style.color = 'var(--lavender-deep)';
+    forgotMsg.textContent = 'Se esse e-mail estiver cadastrado, você vai receber um link em instantes. Confira também o spam.';
   });
 })();
 </script>
