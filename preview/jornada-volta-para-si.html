@@ -37,6 +37,27 @@
   }
   .jornada-steps-intro{ margin-bottom: var(--tm-space-4); }
   .jornada-steps-note{ margin-top: var(--tm-space-4); }
+  .jornada-hyl-credit{
+    margin-top: var(--tm-space-5);
+    padding-top: var(--tm-space-4);
+    border-top: 1px solid var(--tm-line);
+    display: flex;
+    align-items: center;
+    gap: var(--tm-space-3);
+    flex-wrap: wrap;
+  }
+  .jornada-hyl-photo-ph{
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--tm-olive-tint);
+    flex-shrink: 0;
+  }
+  .jornada-hyl-caption{
+    font-size: var(--tm-text-caption);
+    color: var(--tm-ink-muted);
+    flex: 1;
+    min-width: 180px;
+  }
+  .jornada-hyl-seal{ width: 140px; height: auto; opacity: .9; }
   .tm-methodology-index{ color: var(--tm-gold); }
   .jornada-feedback-group{
     display: flex;
@@ -47,12 +68,11 @@
   .jornada-investment .tm-card-investment-value{ margin-top: var(--tm-space-1); }
   .jornada-cta-block{ margin-top: var(--tm-space-4); }
   .jornada-signature-closing{
-    font-family: var(--tm-font-display);
-    font-style: italic;
+    font-family: var(--tm-font-script);
+    font-size: var(--tm-text-h3);
     color: var(--tm-ink-muted);
-    font-size: var(--tm-text-body);
     margin-top: var(--tm-space-5);
-    margin-bottom: var(--tm-space-1);
+    margin-bottom: 0;
   }
   .jornada-signature{ margin-top: 0; }
   .home-whatsapp-line{ margin-top: var(--tm-space-3); }
@@ -219,6 +239,12 @@
     </div>
 
     <p class="tm-editorial-text jornada-steps-note">Nove etapas não cabem numa conversa só, e não deveriam caber num prazo apertado. Isso não é lentidão — é o mesmo respeito que sustentou a cura de Louise Hay, quando ela enfrentou um câncer e decidiu ir até a raiz emocional da doença, não só ao sintoma. Meses, não um fim de semana.</p>
+
+    <div class="jornada-hyl-credit">
+      <div class="jornada-hyl-photo-ph" role="img" aria-label="Retrato de Louise Hay — pendente, aguardando imagem com direito de uso confirmado"></div>
+      <p class="jornada-hyl-caption">Baseado na filosofia criada por Louise Hay, presente em mais de 70 países.</p>
+      <img class="jornada-hyl-seal" src="../assets/brand/selo-heal-your-life.png" alt="Selo oficial Heal Your Life®" width="140" loading="lazy">
+    </div>
   </section>
 
   <hr class="tm-divider">
