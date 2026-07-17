@@ -299,6 +299,20 @@ ul{ margin: 0; padding: 0; list-style: none; }
   text-wrap: balance;
 }
 
+/* --- Manifesto: a UMA frase por página que resume a marca — maior que
+   qualquer statement comum, sem caixa, sem aspas. Reservado para o
+   momento mais importante da tela (ex.: a revelação "Volta para Si" na
+   Home, a frase-patrimônio do Tarô). Nunca mais de uma por página. --- */
+.tm-manifesto{
+  font-family: var(--tm-font-display);
+  font-weight: 500;
+  font-size: var(--tm-text-h2);
+  line-height: 1.2;
+  color: var(--tm-ink);
+  text-wrap: balance;
+  max-width: 18ch;
+}
+
 
 /* --------------------------------------------------------------------------
    6. COMPONENTES DE CONTEÚDO
@@ -465,6 +479,17 @@ figure.tm-photo-feature-wrap figcaption{
 }
 .tm-divider--gold{ border-top-color: var(--tm-line-gold); width: 3rem; margin-inline: 0; }
 .tm-divider--center{ margin-inline: auto; }
+
+/* --- Ritmo de seção: a unidade de leitura em páginas de site (uma ideia
+   por bloco, respiro generoso, coluna estreita — "cada scroll é uma
+   página de livro"). Usar dentro de .tm-container, separadas por
+   .tm-divider. Toda página nova reaproveita isto em vez de recriar. --- */
+.tm-section{
+  padding-block: var(--tm-space-6);
+  max-width: 640px;
+  margin-inline: auto;
+}
+.tm-section--narrow{ max-width: 560px; }
 
 /* --- Bloco de benefícios: lista curta, numerais romanos, sem ícones --- */
 .tm-benefits{

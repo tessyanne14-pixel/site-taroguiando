@@ -13,24 +13,13 @@
 
 <style>
   /* Ajustes só desta página — a bifurcação precisa de peso visual diferente
-     entre os dois caminhos, o que o sistema de componentes não define sozinho. */
-  .home-section{
-    padding-block: var(--tm-space-6);
-    max-width: 640px;
-    margin-inline: auto;
-  }
-  .home-section--narrow{ max-width: 560px; }
-  /* seção 3 termina num manifesto — precisa de espaço antes e depois pra pousar */
+     entre os dois caminhos, o que o sistema de componentes não define sozinho.
+     (.tm-section e .tm-manifesto agora vêm do stylesheet compartilhado.) */
+
+  /* seção 3 termina num manifesto (.tm-manifesto, componente compartilhado)
+     — só o espaçamento extra antes dele é específico desta página */
   .home-origem p:last-of-type{ margin-top: var(--tm-space-3); }
-  .home-manifesto{
-    font-family: var(--tm-font-display);
-    font-weight: 500;
-    font-size: var(--tm-text-h2);
-    line-height: 1.2;
-    text-wrap: balance;
-    color: var(--tm-ink);
-    margin-top: var(--tm-space-5) !important;
-  }
+  .home-origem .tm-manifesto{ margin-top: var(--tm-space-5); }
 
   .home-fork{
     display: flex;
@@ -122,7 +111,7 @@
 <main class="tm-container">
 
   <!-- 1 · Abertura — sem logo, sem nome, sem CTA -->
-  <section class="home-section">
+  <section class="tm-section">
     <p class="tm-statement">Tem dias em que você faz tudo certo — e mesmo assim chega em casa sentindo que passou o dia inteiro sendo todo mundo, menos você.</p>
     <p class="tm-editorial-text">Não é só cansaço.</p>
     <p class="tm-editorial-text">E talvez a explicação não seja a que você está imaginando.</p>
@@ -131,7 +120,7 @@
   <hr class="tm-divider">
 
   <!-- 2 · Reconhecimento — beat 1 -->
-  <section class="home-section">
+  <section class="tm-section">
     <p class="tm-editorial-text">Você diz "eu tô bem" rápido demais pra ser verdade.</p>
     <p class="tm-editorial-text">Percebe o próprio cansaço só quando alguém pergunta se está tudo bem.</p>
     <p class="tm-editorial-text">No fundo, você sabe: não é a agenda que está cheia. É você que está ausente da sua própria vida.</p>
@@ -140,18 +129,18 @@
   <hr class="tm-divider">
 
   <!-- 3 · Reconhecimento — beat 2 · a origem -->
-  <section class="home-section home-origem">
+  <section class="tm-section home-origem">
     <p class="tm-editorial-text">Foi ouvindo centenas de mulheres, ano após ano — primeiro no Tarô — que eu vi essa mesma ausência se repetir. Sempre com um nome diferente. Sempre a mesma raiz.</p>
     <p class="tm-editorial-text">Existe um caminho de volta.</p>
     <p class="tm-editorial-text">Não para voltar a ser quem você era antes de tudo isso.</p>
     <p class="tm-editorial-text">Mas para voltar a reconhecer quem você é — sem as vozes de todo mundo por cima.</p>
-    <p class="home-manifesto">Foi para esse caminho que eu dei o nome de Jornada Volta para Si.</p>
+    <p class="tm-manifesto">Foi para esse caminho que eu dei o nome de Jornada Volta para Si.</p>
   </section>
 
   <hr class="tm-divider tm-divider--gold">
 
   <!-- 4 · Assinatura -->
-  <section class="home-section home-section--narrow home-signature-block">
+  <section class="tm-section tm-section--narrow home-signature-block">
     <div class="home-photo-ph" role="img" aria-label="Retrato de Tessy Martins"></div>
     <p class="tm-editorial-text">Depois de anos ouvindo centenas de mulheres, percebi que uma resposta podia acalmar alguém por alguns dias. Mas eu queria ajudá-la a mudar a forma como viveria os próximos anos.</p>
     <p class="home-signature-closing">Com carinho,</p>
@@ -163,14 +152,14 @@
   <hr class="tm-divider">
 
   <!-- 5 · Prova, em uma linha -->
-  <section class="home-section home-section--narrow">
+  <section class="tm-section tm-section--narrow">
     <p class="tm-editorial-text">Ao longo dos últimos anos, centenas de mulheres passaram pelos meus atendimentos em busca de mais clareza, autoconhecimento e coragem pra fazer escolhas diferentes.</p>
   </section>
 
   <hr class="tm-divider">
 
   <!-- 6 · Bifurcação -->
-  <section class="home-section" id="bifurcacao">
+  <section class="tm-section" id="bifurcacao">
     <p class="tm-editorial-text">O que mais se parece com você hoje?</p>
 
     <div class="home-fork">
@@ -188,7 +177,7 @@
   <hr class="tm-divider">
 
   <!-- 7 · Rodapé -->
-  <footer class="tm-footer home-section home-section--narrow">
+  <footer class="tm-footer tm-section tm-section--narrow">
     <span class="tm-footer-mark">Tessy Martins</span>
     <nav class="tm-footer-links" aria-label="Navegação principal">
       <a href="/">Início</a>
