@@ -20,19 +20,44 @@
     margin-inline: auto;
   }
   .home-section--narrow{ max-width: 560px; }
+  /* seção 3 termina num manifesto — precisa de espaço antes e depois pra pousar */
+  .home-origem p:last-of-type{ margin-top: var(--tm-space-3); }
+  .home-manifesto{
+    font-family: var(--tm-font-display);
+    font-weight: 500;
+    font-size: var(--tm-text-h2);
+    line-height: 1.2;
+    text-wrap: balance;
+    color: var(--tm-ink);
+    margin-top: var(--tm-space-5) !important;
+  }
+
   .home-fork{
     display: flex;
     flex-direction: column;
-    gap: var(--tm-space-4);
+    gap: var(--tm-space-3);
     margin-top: var(--tm-space-4);
   }
-  .home-fork-option{ display: flex; flex-direction: column; gap: var(--tm-space-1); }
+  .home-fork-option{
+    display: flex;
+    flex-direction: column;
+    gap: var(--tm-space-2);
+    padding: var(--tm-space-4);
+    background: var(--tm-paper);
+    border: 1px solid var(--tm-line);
+    border-radius: var(--tm-radius);
+  }
   .home-fork-option p{
     font-family: var(--tm-font-display);
     font-style: italic;
     color: var(--tm-ink-muted);
     font-size: var(--tm-text-body-lg);
     margin: 0;
+  }
+  .home-fork-primary{
+    border-color: var(--tm-line-gold);
+    background: var(--tm-gold-tint);
+    box-shadow: var(--tm-shadow-card);
   }
   .home-fork-primary .tm-cta{
     font-family: var(--tm-font-display);
@@ -49,11 +74,28 @@
     color: var(--tm-ink-muted);
     margin-top: var(--tm-space-2);
   }
-  .home-signature-block{ margin-top: var(--tm-space-4); }
+  .home-signature-block{
+    margin-top: var(--tm-space-6);
+    padding-top: var(--tm-space-2);
+  }
+  .home-signature-block .tm-editorial-text{ line-height: 1.65; }
   .home-photo-ph{
     width: 64px; height: 64px; border-radius: 50%;
     background: var(--tm-lilac-tint);
-    margin-bottom: var(--tm-space-2);
+    margin-bottom: var(--tm-space-3);
+  }
+  .home-signature-closing{
+    font-family: var(--tm-font-display);
+    font-style: italic;
+    color: var(--tm-ink-muted);
+    font-size: var(--tm-text-body);
+    margin-top: var(--tm-space-4);
+    margin-bottom: var(--tm-space-1);
+  }
+  .home-signature-block .tm-signature-name{
+    font-family: var(--tm-font-script);
+    font-size: var(--tm-text-script);
+    font-weight: 400;
   }
   .home-whatsapp-line{ margin-top: var(--tm-space-3); }
   .home-footer-tagline{
@@ -98,12 +140,12 @@
   <hr class="tm-divider">
 
   <!-- 3 · Reconhecimento — beat 2 · a origem -->
-  <section class="home-section">
+  <section class="home-section home-origem">
     <p class="tm-editorial-text">Foi ouvindo centenas de mulheres, ano após ano — primeiro no Tarô — que eu vi essa mesma ausência se repetir. Sempre com um nome diferente. Sempre a mesma raiz.</p>
     <p class="tm-editorial-text">Existe um caminho de volta.</p>
     <p class="tm-editorial-text">Não para voltar a ser quem você era antes de tudo isso.</p>
     <p class="tm-editorial-text">Mas para voltar a reconhecer quem você é — sem as vozes de todo mundo por cima.</p>
-    <p class="tm-statement">Foi para esse caminho que eu dei o nome de Jornada Volta para Si.</p>
+    <p class="home-manifesto">Foi para esse caminho que eu dei o nome de Jornada Volta para Si.</p>
   </section>
 
   <hr class="tm-divider tm-divider--gold">
@@ -112,6 +154,7 @@
   <section class="home-section home-section--narrow home-signature-block">
     <div class="home-photo-ph" role="img" aria-label="Retrato de Tessy Martins"></div>
     <p class="tm-editorial-text">Depois de anos ouvindo centenas de mulheres, percebi que uma resposta podia acalmar alguém por alguns dias. Mas eu queria ajudá-la a mudar a forma como viveria os próximos anos.</p>
+    <p class="home-signature-closing">Com carinho,</p>
     <div class="tm-signature">
       <span class="tm-signature-name">Tessy</span>
     </div>
@@ -148,8 +191,9 @@
   <footer class="tm-footer home-section home-section--narrow">
     <span class="tm-footer-mark">Tessy Martins</span>
     <nav class="tm-footer-links" aria-label="Navegação principal">
-      <a href="/tarot">Tarô</a>
+      <a href="/">Início</a>
       <a href="/jornada-volta-para-si">Jornada Volta para Si</a>
+      <a href="/tarot">Tarô</a>
       <a href="/conheca-a-tessy">Conheça a Tessy</a>
       <a href="/artigos">Artigos</a>
       <a href="/contato">Contato</a>
