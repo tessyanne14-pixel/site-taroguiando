@@ -38,6 +38,20 @@
    é o que garante a mesma identidade em Instagram, PDF, WhatsApp, site e
    apresentações.
    -------------------------------------------------------------------------- */
+
+/* Amoresa — fonte script licenciada da marca (não é Google Fonts, arquivo
+   próprio em /assets/fonts). Usar sempre via var(--tm-font-script), nunca
+   o nome direto, para que uma futura troca de fonte não exija caçar cada
+   ocorrência pelo site. */
+@font-face{
+  font-family: 'Amoresa';
+  src: url('../fonts/Amoresa-Aged.woff2') format('woff2'),
+       url('../fonts/Amoresa-Aged.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root{
 
   /* --- Cor: paleta oficial da marca --- */
@@ -68,7 +82,7 @@
   /* Serif editorial — títulos, citações, números de destaque */
   --tm-font-display: 'Cormorant Garamond', 'Iowan Old Style', 'Palatino Linotype', serif;
   /* Script — reservada para UMA palavra por página, nunca mais que isso */
-  --tm-font-script:  'Allura', cursive;
+  --tm-font-script:  'Amoresa', 'Allura', cursive;
   /* Sans humanista — corpo de texto, rótulos, interface. Preferida a Inter:
      Karla tem mais calor e menos "identidade de produto de software",
      o que combina melhor com uma marca de acolhimento do que uma
